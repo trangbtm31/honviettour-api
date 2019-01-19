@@ -50,9 +50,10 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-        // echo ($exception instanceof \Illuminate\Auth\AuthenticationException);
-        $jsonResponse = $this->handleApiException($exception);
-        return $jsonResponse ?? parent::render($request, $exception);
-        // return parent::render($request, $exception);
+        if($request->is('api/*')) {
+            $jsonResponse = $this->handleApiException($exception);
+            return $jsonResponse ?? parent::render($request, $exception);
+        }
+        return parent::render($request, $exception);
     }
 }

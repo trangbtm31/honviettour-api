@@ -2,7 +2,7 @@
 
 namespace Honviettour\Http\Controllers\Auth;
 
-use Honviettour\User;
+use Honviettour\Models\User;
 use Honviettour\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;

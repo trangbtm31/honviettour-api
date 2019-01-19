@@ -14,6 +14,12 @@
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/test', function() {
-    echo "test";
-});
+Auth::routes();
+
+Route::get('/admin', 'HomeController@index')->name('home');
+foreach ( File::allFiles(__DIR__ . '/admin') as $partial) {
+    require $partial->getPathname();
+}
+/*foreach ( File::allFiles(__DIR__ . '/web') as $partial) {
+    require $partial->getPathname();
+}*/
