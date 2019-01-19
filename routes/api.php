@@ -13,6 +13,13 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
+/*Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
-});
+});*/
+Route::post('login', 'UserController@login')->name('login');
+Route::post('register', 'UserController@store')->name('store');
+
+// Load all routes
+foreach ( File::allFiles(__DIR__ . '/api') as $partial) {
+    require $partial->getPathname();
+}
