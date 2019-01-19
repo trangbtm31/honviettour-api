@@ -14,9 +14,7 @@
 Route::get('/', function () {
     return view('welcome');
 });
-Auth::routes();
 
-Route::get('/admin', 'HomeController@index')->name('home');
 foreach ( File::allFiles(__DIR__ . '/admin') as $partial) {
     require $partial->getPathname();
 }
