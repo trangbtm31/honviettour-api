@@ -1,12 +1,14 @@
 <?php
 
-namespace App\Exceptions;
+namespace Honviettour\Exceptions;
 
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Honviettour\Traits\ExceptionTrait;
 
 class Handler extends ExceptionHandler
 {
+    use ExceptionTrait;
     /**
      * A list of the exception types that are not reported.
      *
@@ -48,6 +50,9 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-        return parent::render($request, $exception);
+        // echo ($exception instanceof \Illuminate\Auth\AuthenticationException);
+        $jsonResponse = $this->handleApiException($exception);
+        return $jsonResponse ?? parent::render($request, $exception);
+        // return parent::render($request, $exception);
     }
 }

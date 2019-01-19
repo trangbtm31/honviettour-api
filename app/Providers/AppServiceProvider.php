@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Providers;
+namespace Honviettour\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
