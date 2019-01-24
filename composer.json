@@ -6,11 +6,12 @@
     "type": "project",
     "require": {
         "php": ">=7.0.0",
-        "fideloper/proxy": "~3.3",
         "barryvdh/laravel-cors": "^0.11.2",
+        "encore/laravel-admin": "^1.6",
+        "fideloper/proxy": "~3.3",
         "laravel/framework": "5.5.*",
-        "laravel/tinker": "~1.0",
-        "laravel/passport": "^4.0"
+        "laravel/passport": "^4.0",
+        "laravel/tinker": "~1.0"
     },
     "require-dev": {
         "filp/whoops": "~2.0",
@@ -25,7 +26,7 @@
             "database/factories"
         ],
         "psr-4": {
-            "Honviettour\\": "app/"
+            "App\\": "app/"
         }
     },
     "autoload-dev": {
@@ -54,6 +55,8 @@
     "config": {
         "preferred-install": "dist",
         "sort-packages": true,
-        "optimize-autoloader": true
+        "optimize-autoloader": true,
+        "github-oauth": {
+            "github.com": "123456"}
     }
 }
