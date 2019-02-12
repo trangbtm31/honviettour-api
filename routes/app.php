@@ -15,9 +15,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-foreach ( File::allFiles(__DIR__ . '/admin') as $partial) {
-    require $partial->getPathname();
-}
+//foreach ( File::allFiles(__DIR__ . '/admin') as $partial) {
+//    require $partial->getPathname();
+//}
 /*foreach ( File::allFiles(__DIR__ . '/web') as $partial) {
     require $partial->getPathname();
 }*/

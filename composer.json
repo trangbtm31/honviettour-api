@@ -57,6 +57,7 @@
         "sort-packages": true,
         "optimize-autoloader": true,
         "github-oauth": {
-            "github.com": "123456"}
+
+        }
     }
 }
