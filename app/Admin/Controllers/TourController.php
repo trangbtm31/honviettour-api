@@ -23,8 +23,8 @@ class TourController extends Controller
     public function index(Content $content)
     {
         return $content
-            ->header('Index')
-            ->description('description')
+            ->header('Tours')
+            ->description('List')
             ->body($this->grid());
     }
 
@@ -39,7 +39,7 @@ class TourController extends Controller
     {
         return $content
             ->header('Detail')
-            ->description('description')
+            ->description('Tour detail')
             ->body($this->detail($id));
     }
 
@@ -54,7 +54,7 @@ class TourController extends Controller
     {
         return $content
             ->header('Edit')
-            ->description('description')
+            ->description('Tour edit')
             ->body($this->form()->edit($id));
     }
 
@@ -68,7 +68,7 @@ class TourController extends Controller
     {
         return $content
             ->header('Create')
-            ->description('description')
+            ->description('Create new tour')
             ->body($this->form());
     }
 
@@ -79,7 +79,7 @@ class TourController extends Controller
      */
     protected function grid()
     {
-        $grid = new Grid(new User);
+        $grid = new Grid(new Tour);
 
         $grid->id('Id');
         $grid->name('Name');
