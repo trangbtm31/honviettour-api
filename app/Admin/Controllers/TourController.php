@@ -83,9 +83,14 @@ class TourController extends Controller
 
         $grid->id('Id');
         $grid->name('Name');
-        $grid->email('Email');
-        $grid->password('Password');
-        $grid->remember_token('Remember token');
+        $grid->description('Description');
+        $grid->price_for_baby('Price for baby');
+        $grid->price_for_child('Price for child');
+        $grid->price_for_adult('Price for adult');
+        $grid->start_place('Start place');
+        $grid->start_time('Start Time');
+        $grid->tour_guide('Tour guide');
+        $grid->available('Available');
         $grid->created_at('Created at');
         $grid->updated_at('Updated at');
 
