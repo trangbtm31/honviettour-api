@@ -105,13 +105,18 @@ class TourController extends Controller
      */
     protected function detail($id)
     {
-        $show = new Show(User::findOrFail($id));
+        $show = new Show(Tour::findOrFail($id));
 
         $show->id('Id');
         $show->name('Name');
-        $show->email('Email');
-        $show->password('Password');
-        $show->remember_token('Remember token');
+        $show->description('Description');
+        $show->price_for_baby('Price for baby');
+        $show->price_for_child('Price for child');
+        $show->price_for_adult('Price for adult');
+        $show->start_place('Start place');
+        $show->start_time('Start Time');
+        $show->tour_guide('Tour guide');
+        $show->available('Available');
         $show->created_at('Created at');
         $show->updated_at('Updated at');
 
@@ -125,7 +130,7 @@ class TourController extends Controller
      */
     protected function form()
     {
-        $form = new Form(new User);
+        $form = new Form(new Tour);
 
         $form->text('name', 'Name');
         $form->email('email', 'Email');
