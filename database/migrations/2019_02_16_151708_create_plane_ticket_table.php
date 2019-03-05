@@ -15,8 +15,6 @@ class CreatePlaneTicketTable extends Migration
     {
         Schema::create('plane_ticket', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('plane_id')->unsigned();
-            $table->foreign('plane_id')->references('id')->on('planes')->onDelete('cascade')->onUpdate('cascade');
             $table->string('from_place');
             $table->string('to_place');
             $table->dateTime('start_date');

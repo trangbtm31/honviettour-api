@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTourTable extends Migration
+class CreatePriceTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,17 +13,11 @@ class CreateTourTable extends Migration
      */
     public function up()
     {
-        Schema::create('tours', function (Blueprint $table) {
+        Schema::create('prices', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name');
+            $table->float('value');
             $table->string('description');
-            $table->string('start_place');
-            $table->string('service');
-            $table->integer('available_number');
-            $table->dateTime('start_date');
-            $table->dateTime('end_date');
             $table->string('note');
-            $table->string('detail');
             $table->timestamps();
         });
     }
@@ -35,6 +29,6 @@ class CreateTourTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tours');
+        Schema::dropIfExists('prices');
     }
 }
