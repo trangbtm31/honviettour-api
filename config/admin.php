@@ -312,6 +312,19 @@ return [
     |
     */
     'extensions' => [
-
+        'composer-viewer' => [
+            'enable' => true,
+        ],
+        'media-manager' => [
+            // Select a local disk that you configured in `config/filesystem.php`
+            'disk' => 'public'
+        ],
+        'summernote' => [
+            'enable' => true,
+            'config' => [
+                'lang'   => 'en-US',
+                'height' => 300,
+            ]
+        ]
     ],
 ];

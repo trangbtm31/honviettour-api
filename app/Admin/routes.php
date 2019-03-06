@@ -13,4 +13,13 @@ Route::group([
     $router->get('/', 'HomeController@index');
     $router->resource('demo/users', UserController::class);
 
+    $router->resource('tours', TourController::class);
+
+    $router->resource('price', PriceController::class);
+
+    $router->resource('plans', PlanController::class);
+
+    $router->resource('hotels', HotelController::class);
 });
+
+

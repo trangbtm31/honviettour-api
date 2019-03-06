@@ -3,6 +3,7 @@
 namespace Honviettour\Admin\Controllers;
 
 use Honviettour\Models\Tour;
+use Honviettour\Models\Plan;
 use Honviettour\Http\Controllers\Controller;
 use Encore\Admin\Controllers\HasResourceActions;
 use Encore\Admin\Form;
@@ -54,7 +55,7 @@ class TourController extends Controller
     {
         return $content
             ->header('Edit')
-            ->description('Tour edit')
+            ->description('Edit tour')
             ->body($this->form()->edit($id));
     }
 
@@ -80,17 +81,23 @@ class TourController extends Controller
     protected function grid()
     {
         $grid = new Grid(new Tour);
+        $grid->model()->orderBy('start_date', 'asc');
+        $grid->paginate(config('constants.ADMIN_ITEM_PER_PAGE'));
+
+        $grid->disableRowSelector();
 
         $grid->id('Id');
         $grid->name('Name');
-        $grid->description('Description');
-        $grid->price_for_baby('Price for baby');
-        $grid->price_for_child('Price for child');
-        $grid->price_for_adult('Price for adult');
+
         $grid->start_place('Start place');
-        $grid->start_time('Start Time');
-        $grid->tour_guide('Tour guide');
-        $grid->available('Available');
+        $grid->start_date('Start Date')->display(function($date) {
+            return date('d-M-Y', strtotime($date));
+        });
+        $grid->end_date('End Date')->display(function($date) {
+            return date('d-M-Y', strtotime($date));
+        });
+        $grid->available_number('Available No.');
+        $grid->description('Description')->limit(20);
         $grid->created_at('Created at');
         $grid->updated_at('Updated at');
 
@@ -110,15 +117,17 @@ class TourController extends Controller
         $show->id('Id');
         $show->name('Name');
         $show->description('Description');
-        $show->price_for_baby('Price for baby');
-        $show->price_for_child('Price for child');
-        $show->price_for_adult('Price for adult');
+        // $show->price_for_baby('Price for baby');
+        // $show->price_for_child('Price for child');
+        // $show->price_for_adult('Price for adult');
         $show->start_place('Start place');
-        $show->start_time('Start Time');
-        $show->tour_guide('Tour guide');
-        $show->available('Available');
-        $show->created_at('Created at');
-        $show->updated_at('Updated at');
+        $show->start_date('Start Date');
+        $show->end_date('End Date');
+        $show->available_number('Available Number');
+        $show->description('Description');
+        $show->service('Service');
+        $show->note('Note');
+        $show->detail('Detail');
 
         return $show;
     }
@@ -132,10 +141,42 @@ class TourController extends Controller
     {
         $form = new Form(new Tour);
 
+        $form->display('id', 'ID');
+
         $form->text('name', 'Name');
-        $form->email('email', 'Email');
-        $form->password('password', 'Password');
-        $form->text('remember_token', 'Remember token');
+        // $form->price_for_baby('Price for baby');
+        // $form->price_for_child('Price for child');
+        // $form->price_for_adult('Price for adult');
+        $form->text('start_place', 'Start place');
+        $form->datetime('start_date', 'Start Date');
+        $form->datetime('end_date', 'End Date');
+        $form->number('available_number', 'Available Number');
+        $form->textarea('description', 'Description');
+        $form->textarea('note', 'Note');
+        $form->summernote('service', 'Service');
+        $form->summernote('detail', 'Details');
+
+        $priceOptions = config('constants.tour_prices');
+        $form->hasMany('prices', 'Price', function (Form\NestedForm $form) use ($priceOptions){
+            $form->select('Price')->options($priceOptions)->rules('required');
+            $form->number('value')->rules('required');
+            $form->textarea('description')->rules('required');
+            $form->textarea('note')->rules('required');
+        });
+        // $plans = Plan::all()->pluck('id', 'title');
+        $form->multipleSelect('plans')->options(Plan::all()->pluck('title', 'id'));
+        /*$form->hasMany('plans', 'Plan', function (Form\NestedForm $form) use ($plans) {
+            $form->select('Plan')->options($plans)->rules('required');
+            $form->text('title', 'Title')->rules('required');
+            $form->textarea('description', 'Description')->rules('required');
+            $form->image('photo', 'Photo');
+        });*/
+        $form->switch('status', 'Published');
+        $form->display('created_at', 'Created At');
+        $form->display('updated_at', 'Updated At');
+
+
+
 
         return $form;
     }
