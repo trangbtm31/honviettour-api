@@ -3,8 +3,6 @@
 namespace Honviettour\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Honviettour\Models\Price;
-use Honviettour\Models\Plan;
 
 class Tour extends Model
 {
@@ -13,8 +11,19 @@ class Tour extends Model
         return $this->hasMany(Price::class);
     }
 
+    public function trans()
+    {
+        return $this->hasMany(TourTranslation::class);
+    }
+
     public function plans()
     {
         return $this->belongsToMany(Plan::class);
     }
+
+    public function images()
+    {
+        return $this->morphMany(Image::class, 'model');
+    }
+
 }

@@ -4,9 +4,10 @@ namespace Honviettour\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Price extends Model
+class TourTranslation extends Model
 {
-    protected $fillable = ['value', 'type', 'description', 'note', 'tour_id'];
+    protected $fillable = ['name', 'lang', 'description', 'service', 'note', 'detail', 'tour_id'];
+
     public function tour()
     {
         return $this->belongsTo(Tour::class);
