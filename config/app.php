@@ -176,6 +176,7 @@ return [
         // Honviettour\Providers\BroadcastServiceProvider::class,
         Honviettour\Providers\EventServiceProvider::class,
         Honviettour\Providers\RouteServiceProvider::class,
+        Honviettour\Providers\AdminFieldServiceProvider::class,
 
     ],
 
