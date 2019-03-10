@@ -24,7 +24,7 @@ class PlanController extends Controller
     {
         return $content
             ->header('Index')
-            ->description('description')
+            ->description('List Plans')
             ->body($this->grid());
     }
 
@@ -39,7 +39,7 @@ class PlanController extends Controller
     {
         return $content
             ->header('Detail')
-            ->description('description')
+            ->description('Plan')
             ->body($this->detail($id));
     }
 
@@ -54,7 +54,7 @@ class PlanController extends Controller
     {
         return $content
             ->header('Edit')
-            ->description('description')
+            ->description('Edit Plan')
             ->body($this->form()->edit($id));
     }
 
@@ -68,7 +68,7 @@ class PlanController extends Controller
     {
         return $content
             ->header('Create')
-            ->description('description')
+            ->description('Create new Plan')
             ->body($this->form());
     }
 
@@ -80,11 +80,28 @@ class PlanController extends Controller
     protected function grid()
     {
         $grid = new Grid(new Plan);
+        $grid->paginate(config('constants.ADMIN_ITEM_PER_PAGE'));
+
+        $grid->disableRowSelector();
 
         $grid->id('Id');
-        $grid->title('Title');
-        $grid->description('Description');
-        $grid->photo('Photo');
+        $grid->images('Photo')->display(function () {
+            return count($this->images) ? '<img width="30" src="'  .(env('APP_URL') . '/storage/' . $this->images[0]['path']) . '""/>' : '';
+        });
+
+        $grid->column('Title')->display(function () {
+            $titles = array_map(function($item) {
+                return "<span>{$item['lang']}: {$item['title']}</span><br>";
+            }, $this->trans->toArray());
+            return implode('', $titles);
+        });
+        $grid->column('Description')->display(function() {
+            $descriptions = array_map(function($item) {
+                $des = str_limit($item['description'], 20);
+                return "<span>{$item['lang']}: $des</span><br>";
+            }, $this->trans->toArray());
+            return implode('', $descriptions);
+        });
         $grid->created_at('Created at');
         $grid->updated_at('Updated at');
 
@@ -102,9 +119,9 @@ class PlanController extends Controller
         $show = new Show(Plan::findOrFail($id));
 
         $show->id('Id');
+
         $show->title('Title');
         $show->description('Description');
-        $show->photo('Photo');
         $show->created_at('Created at');
         $show->updated_at('Updated at');
 
@@ -120,9 +137,32 @@ class PlanController extends Controller
     {
         $form = new Form(new Plan);
 
-        $form->text('title', 'Title');
-        $form->text('description', 'Description');
-        $form->text('photo', 'Photo');
+        $form->tabs('images', 'Photo', function(Form\NestedForm $form) {
+            $form->image('path', 'Photo');
+            $form->switch('status', 'Published');
+            $form->hidden('model_type')->default(get_class(new Plan));
+        });
+        $form->tabs('trans', 'Translation', function(Form\NestedForm $form) {
+            $form->select('lang', 'Language')
+                ->options(config('constants.languages'));
+            $form->text('title', 'Title');
+            $form->textarea('description', 'Description')->rows(4);
+        })->tabKey('lang');
+        $form->switch('status', 'Published');
+        $form->display('created_at', 'Created At');
+        $form->display('updated_at', 'Updated At');
+
+        $form->footer(function ($footer) {
+            // disable `View` checkbox
+            $footer->disableViewCheck();
+
+            // disable `Continue editing` checkbox
+            $footer->disableEditingCheck();
+
+            // disable `Continue Creating` checkbox
+            $footer->disableCreatingCheck();
+
+        });
 
         return $form;
     }
