@@ -51,7 +51,7 @@ return [
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
-            'url' => env('APP_URL').'/storage',
+            'url' => env('APP_URL') . '/storage',
             'visibility' => 'public',
         ],
 
@@ -63,6 +63,20 @@ return [
             'bucket' => env('AWS_BUCKET'),
         ],
 
+
+       'images' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public'),
+            'url' => env('APP_URL') . '/storage',
+            'visibility' => 'public',
+        ],
+
+        'admin' => [
+            'driver'     => 'local',
+            'root'       => public_path('upload'),
+            'visibility' => 'public',
+            'url' => env('APP_URL').'/public/upload/',
+        ],
     ],
 
 ];
