@@ -177,6 +177,7 @@ return [
         Honviettour\Providers\EventServiceProvider::class,
         Honviettour\Providers\RouteServiceProvider::class,
         Honviettour\Providers\AdminFieldServiceProvider::class,
+        Honviettour\Providers\ApiServiceProvider::class,
 
     ],
 
@@ -226,7 +227,7 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-
+        'Api' => Honviettour\Facades\Api::class,
     ],
 
 ];

@@ -325,6 +325,10 @@ return [
                 'lang'   => 'en-US',
                 'height' => 300,
             ]
+        ],
+        'api-tester' => [
+            'prefix' => 'api',
+            // 'guard'  => 'api',
         ]
     ],
 ];
