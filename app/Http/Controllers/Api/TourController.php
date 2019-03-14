@@ -3,32 +3,29 @@
 namespace Honviettour\Http\Controllers\Api;
 
 use Honviettour\Models\Tour;
+use Illuminate\Http\Response;
 use Illuminate\Http\Request;
 use Honviettour\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\Response;
+use Honviettour\Facades\API;
+use Honviettour\Services\TourService;
+use Honviettour\Http\Requests\TourRequest;
 
 class TourController extends Controller
 {
+    private $service;
+    public function __construct(TourService $service)
+    {
+        $this->service = $service;
+    }
 
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return $this->service->search($request);
     }
 
     /**
@@ -37,41 +34,35 @@ class TourController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(TourRequest $request)
     {
-        //
+        $newTour = $this->service->create($request);
+        return API::response($newTour, Response::HTTP_CREATED);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \Honviettour\Models\Tour  $tour
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Tour $tour)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+        $tour->trans;
+        $tour->images;
+        $tour->prices;
+        $tour->plans;
+        return API::response($tour, Response::HTTP_OK);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Honviettour\Models\Tour  $tour
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(TourRequest $request, Tour $tour)
     {
         //
     }
@@ -79,11 +70,12 @@ class TourController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \Honviettour\Models\Tour  $tour
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Tour $tour)
     {
-        //
+        $tour->delete();
+        return Api::response(null, Response::HTTP_NO_CONTENT);
     }
 }
