@@ -20,4 +20,11 @@ class Plan extends Model
     {
         return $this->hasMany(PlanTranslation::class);
     }
+
+    public function delete()
+    {
+        $this->trans()->delete();
+        $this->images()->delete();
+        return parent::delete();
+    }
 }
