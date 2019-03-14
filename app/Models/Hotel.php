@@ -20,4 +20,11 @@ class Hotel extends Model
     {
         return $this->belongsTo(Country::class);
     }
+
+    public function delete()
+    {
+        $this->trans()->delete();
+        $this->images()->delete();
+        return parent::delete();
+    }
 }
