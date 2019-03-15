@@ -38,4 +38,38 @@ class PlanController extends Controller
         return Api::response($plan, Response::HTTP_OK);
     }
 
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Honviettour\Models\Plan  $plan
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, Plan $plan)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \Honviettour\Models\Plan  $plan
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(Plan $plan)
+    {
+        //
+    }
+
 }
