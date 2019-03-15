@@ -3,9 +3,11 @@
 namespace Honviettour\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Honviettour\Traits\PaginatorTrait;
 
 class Plan extends Model
 {
+    use PaginatorTrait;
     public function tours()
     {
         return $this->belongsToMany(Tour::class);
@@ -27,4 +29,16 @@ class Plan extends Model
         $this->images()->delete();
         return parent::delete();
     }
+
+    public function search($request)
+    {
+        $sortBy = $request->query->get('sortBy', 'id');
+        $sortType = $request->query->get('sortType', 'asc');
+        $limit = $request->query->get('limit', config('constants.ADMIN_ITEM_PER_PAGE'));
+
+        $builder = $this->with(['trans', 'images'])->orderBy($sortBy, $sortType);
+        return self::paginate($builder, $limit);
+    }
+
+
 }
