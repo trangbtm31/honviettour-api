@@ -17,5 +17,5 @@
  * Admin::js('/packages/prettydocs/js/main.js');
  *
  */
-
+app('view')->prependNamespace('admin', resource_path('views/admin'));
 Encore\Admin\Form::forget(['map', 'editor']);
