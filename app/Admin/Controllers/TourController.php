@@ -8,7 +8,6 @@ use Honviettour\Models\Image;
 use Honviettour\Http\Controllers\Controller;
 use Encore\Admin\Controllers\HasResourceActions;
 use Encore\Admin\Form;
-use Honviettour\Admin\Extensions\Field;
 use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
@@ -192,10 +191,23 @@ class TourController extends Controller
             return $q->orderBy('lang', 'asc');
         }])->get();
         $plans = [];
+        $planAttrs = [];
         foreach ($planObj as $key => $plan) {
             $plans[$plan->id] = isset($plan->trans[0]) ? $plan->trans[0]->title . (isset($plan->trans[1]) ? ' | ' . $plan->trans[1]->title : '') : $plan->id;
+            $planAttrs[$plan->id] = [
+                'label' => isset($plan->trans[0]) ? $plan->trans[0]->title . (isset($plan->trans[1]) ? ' | ' . $plan->trans[1]->title : '') : $plan->id,
+                'image' => env('APP_URL') . '/storage/' . $plan->images[0]->path,
+            ];
+            if(isset($plan->trans[0])) {
+                $planAttrs[$plan->id]['titles'][$plan->trans[0]->lang] = $plan->trans[0]->title;
+                $planAttrs[$plan->id]['descriptions'][$plan->trans[0]->lang] = $plan->trans[0]->description;
+            }
+            if(isset($plan->trans[1])) {
+                $planAttrs[$plan->id]['titles'][$plan->trans[1]->lang] = $plan->trans[1]->title;
+                $planAttrs[$plan->id]['descriptions'][$plan->trans[1]->lang] = $plan->trans[1]->description;
+            }
         }
-        $form->multipleSelect('plans')->options($plans);
+        $form->advancedMultipleSelect('plans')->options($plans)->attr($planAttrs);
         /*$form->hasMany('plans', 'Plan', function (Form\NestedForm $form) use ($plans) {
             $form->select('Plan')->options($plans)->rules('required');
             $form->text('title', 'Title')->rules('required');
