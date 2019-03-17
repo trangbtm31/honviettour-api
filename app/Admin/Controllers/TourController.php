@@ -177,8 +177,7 @@ class TourController extends Controller
             $form->textarea('note', 'Note')->rows(2);
             $form->textarea('service', 'Service');
             $form->textarea('detail', 'Details');
-            // $form->summernote('detail', 'Details');
-        })->tabKey('lang');
+        })->tabKey('lang')->setSummernoteFields(['.detail', '.service']);
         $priceOptions = config('constants.tour_prices');
         $form->tabs('prices', 'Price', function (Form\NestedForm $form) use ($priceOptions){
             $form->select('type')

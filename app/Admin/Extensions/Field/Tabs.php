@@ -48,6 +48,8 @@ class Tabs extends Field
 
     protected $tabKey = 'id';
 
+    protected $summernoteFields = [];
+
     /**
      * Available views for HasMany field.
      *
@@ -329,18 +331,16 @@ class Tabs extends Field
         return $this;
     }
 
-    /**
-     * Set view mode.
-     *
-     * @param string $mode currently support `tab` mode.
-     *
-     * @return $this
-     *
-     * @author Edwin Hui
-     */
     public function tabKey($value)
     {
         $this->tabKey = $value;
+
+        return $this;
+    }
+
+    public function setSummernoteFields($value)
+    {
+        $this->summernoteFields = $value;
 
         return $this;
     }
@@ -423,8 +423,8 @@ class Tabs extends Field
         $removeClass = NestedForm::REMOVE_FLAG_CLASS;
         $defaultKey = NestedForm::DEFAULT_KEY_NAME;
 
+    $summernoteField = !empty($this->summernoteFields) ? implode(', ', $this->summernoteFields) : '';
         $script = <<<EOT
-
 $('#has-many-{$this->column} > .nav').off('click', 'i.close-tab').on('click', 'i.close-tab', function(){
     var \$navTab = $(this).siblings('a');
     var \$pane = $(\$navTab.attr('href'));
@@ -441,6 +441,8 @@ $('#has-many-{$this->column} > .nav').off('click', 'i.close-tab').on('click', 'i
     }
 });
 
+$('{$summernoteField}', $('#has-many-{$this->column} > .tab-content .tab-pane.active')).summernote({height: 300});
+
 var index = 0;
 $('#has-many-{$this->column} > .header').off('click', '.add').on('click', '.add', function(){
     index++;
@@ -450,6 +452,12 @@ $('#has-many-{$this->column} > .header').off('click', '.add').on('click', '.add'
     $('#has-many-{$this->column} > .tab-content').append(paneHtml);
     $('#has-many-{$this->column} > .nav > li:last-child a').tab('show');
     {$templateScript}
+    $('{$summernoteField}', $('#has-many-{$this->column} > .tab-content .tab-pane.active')).summernote({height: 300});
+});
+
+$('#has-many-{$this->column} > .nav').off('click', 'li').on('click', 'li:not(.active)', function() {
+    var target = $(this).find('> a').attr('href');
+    $('{$summernoteField}',  $(target)).summernote({height: 300});
 });
 
 if ($('.has-error').length) {

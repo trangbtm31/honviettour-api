@@ -146,8 +146,8 @@ class PlanController extends Controller
             $form->select('lang', 'Language')
                 ->options(config('constants.languages'));
             $form->text('title', 'Title');
-            $form->textarea('description', 'Description')->rows(4);
-        })->tabKey('lang');
+            $form->textarea('description', 'Description');
+        })->tabKey('lang')->setSummernoteFields(['.description']);
         $form->switch('status', 'Published');
         $form->display('created_at', 'Created At');
         $form->display('updated_at', 'Updated At');
