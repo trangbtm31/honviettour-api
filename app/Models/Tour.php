@@ -57,7 +57,7 @@ class Tour extends Model
         return $tours;*/
 
         $builder = $this->with(['trans', 'images', 'prices', 'plans'])->orderBy($sortBy, $sortType);
-        return self::paginate($builder, $limit);
+        return self::apiPaginate($builder, $limit);
     }
 
     public function delete()

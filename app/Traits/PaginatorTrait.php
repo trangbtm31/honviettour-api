@@ -13,7 +13,7 @@ trait PaginatorTrait
      * @param int $limit
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
-    public static function paginate($collection, int $limit = null): LengthAwarePaginator
+    public static function apiPaginate($collection, int $limit = null): LengthAwarePaginator
     {
         (empty($limit) || $limit < 0) && $limit = config('constants.ADMIN_ITEM_PER_PAGE'); // In case we submit limit <= 0;
         return $collection->paginate($limit)->appends(request()->except(['page', 'sort', 'direction']));
