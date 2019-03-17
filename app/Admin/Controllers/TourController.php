@@ -177,6 +177,7 @@ class TourController extends Controller
             $form->textarea('note', 'Note')->rows(2);
             $form->textarea('service', 'Service');
             $form->textarea('detail', 'Details');
+            // $form->summernote('detail', 'Details');
         })->tabKey('lang');
         $priceOptions = config('constants.tour_prices');
         $form->tabs('prices', 'Price', function (Form\NestedForm $form) use ($priceOptions){
@@ -188,7 +189,14 @@ class TourController extends Controller
             $form->textarea('note')->rules('required')->rows(2);
         });
         $form->divide();
-        $form->multipleSelect('plans')->options(Plan::all()->pluck('title', 'id'));
+        $planObj = Plan::with(['trans' => function($q) {
+            return $q->orderBy('lang', 'asc');
+        }])->get();
+        $plans = [];
+        foreach ($planObj as $key => $plan) {
+            $plans[$plan->id] = isset($plan->trans[0]) ? $plan->trans[0]->title . (isset($plan->trans[1]) ? ' | ' . $plan->trans[1]->title : '') : $plan->id;
+        }
+        $form->multipleSelect('plans')->options($plans);
         /*$form->hasMany('plans', 'Plan', function (Form\NestedForm $form) use ($plans) {
             $form->select('Plan')->options($plans)->rules('required');
             $form->text('title', 'Title')->rules('required');
