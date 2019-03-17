@@ -7,7 +7,7 @@ use Honviettour\Traits\PaginatorTrait;
 
 class Plan extends Model
 {
-    use PaginatorTrait;
+//    use PaginatorTrait;
     public function tours()
     {
         return $this->belongsToMany(Tour::class);
@@ -37,7 +37,8 @@ class Plan extends Model
         $limit = $request->query->get('limit', config('constants.ADMIN_ITEM_PER_PAGE'));
 
         $builder = $this->with(['trans', 'images'])->orderBy($sortBy, $sortType);
-        return self::paginate($builder, $limit);
+//        return self::paginate($builder, $limit);
+        return $builder;
     }
 
 

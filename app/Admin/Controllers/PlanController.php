@@ -80,7 +80,7 @@ class PlanController extends Controller
     protected function grid()
     {
         $grid = new Grid(new Plan);
-        $grid->paginate(config('constants.ADMIN_ITEM_PER_PAGE'));
+//        $grid->paginate(config('constants.ADMIN_ITEM_PER_PAGE'));
 
         $grid->disableRowSelector();
 
