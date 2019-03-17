@@ -22,13 +22,16 @@
     position: relative;
 }
 
+.select2-container-multi .select2-choices .select2-search-choice {
+    padding: 3px 5px;
+}
+
 /* ************** END SELECT2 OVERWRITE ************** */
 
 .select2-selected-image, .select2-option-image {
         height: 28px;
         margin-right: 3px;
         vertical-align: middle;
-        border-radius: 50%;
     }
     .select2-selected-image.big {
         float: left;
