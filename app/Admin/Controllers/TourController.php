@@ -11,11 +11,11 @@ use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
-// use Encore\Admin\Widgets\Tab;
+use Honviettour\Traits\CommonTrait;
 
 class TourController extends Controller
 {
-    use HasResourceActions;
+    use HasResourceActions, CommonTrait;
 
     /**
      * Index interface.
@@ -88,9 +88,14 @@ class TourController extends Controller
         $grid->disableRowSelector();
 
         $grid->id('Id');
-        $grid->images('Photo')->display(function () {
-            return count($this->images) ? '<img width="30" src="'  .(env('APP_URL') . '/storage/' . $this->images[0]['path']) . '""/>' : '';
+        $grid->photo('Photo')->display(function ($img) {
+            return $img ? '<img width="30" src="'  .(env('APP_URL') . '/storage/' . $img) . '""/>' : '';
         });
+
+        /*$grid->images('Photo')->display(function () {
+            return count($this->images) ? '<img width="30" src="'  .(env('APP_URL') . '/storage/' . $this->images[0]['path']) . '""/>' : '';
+        });*/
+
         $grid->column('Name')->display(function () {
             $names = array_map(function($item) {
                 return "<span>{$item['lang']}: {$item['name']}</span><br>";
@@ -163,12 +168,11 @@ class TourController extends Controller
         $form->datetime('end_date', 'End Date');
         $form->number('available_number', 'Available Number');
         $form->divide();
-        $form->tabs('images', 'Photo', function(Form\NestedForm $form) {
-            $form->image('path', 'Photo');
-            $form->switch('status', 'Published');
-            $form->hidden('model_type')->default(get_class(new Tour));
-        });
-        $form->tabs('trans', 'Translation', function(Form\NestedForm $form) {
+        // $this->getImagesTabField($form, get_class(new Tour));
+        $form->image('photo', 'Photo');
+        $form->multipleImage('gallery', 'Gallery');
+
+        $form->tabs('trans', 'Information', function(Form\NestedForm $form) {
             $form->select('lang', 'Language')
                 ->options(config('constants.languages'));
             $form->text('name', 'Name');
@@ -196,7 +200,7 @@ class TourController extends Controller
             $plans[$plan->id] = isset($plan->trans[0]) ? $plan->trans[0]->title . (isset($plan->trans[1]) ? ' | ' . $plan->trans[1]->title : '') : $plan->id;
             $planAttrs[$plan->id] = [
                 'label' => isset($plan->trans[0]) ? $plan->trans[0]->title . (isset($plan->trans[1]) ? ' | ' . $plan->trans[1]->title : '') : $plan->id,
-                'image' => env('APP_URL') . '/storage/' . $plan->images[0]->path,
+                'image' => env('APP_URL') . '/storage/' . $plan->photo,
             ];
             if(isset($plan->trans[0])) {
                 $planAttrs[$plan->id]['titles'][$plan->trans[0]->lang] = $plan->trans[0]->title;

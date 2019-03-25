@@ -85,8 +85,8 @@ class PlanController extends Controller
         $grid->disableRowSelector();
 
         $grid->id('Id');
-        $grid->images('Photo')->display(function () {
-            return count($this->images) ? '<img width="30" src="'  .(env('APP_URL') . '/storage/' . $this->images[0]['path']) . '""/>' : '';
+        $grid->photo('Photo')->display(function ($img) {
+            return $img ? '<img width="30" src="'  .(env('APP_URL') . '/storage/' . $img) . '""/>' : '';
         });
 
         $grid->column('Title')->display(function () {
@@ -137,11 +137,13 @@ class PlanController extends Controller
     {
         $form = new Form(new Plan);
 
-        $form->tabs('images', 'Photo', function(Form\NestedForm $form) {
+        /*$form->tabs('images', 'Photo', function(Form\NestedForm $form) {
             $form->image('path', 'Photo');
             $form->switch('status', 'Published');
             $form->hidden('model_type')->default(get_class(new Plan));
-        });
+        });*/
+        $form->image('photo', 'Photo');
+        $form->multipleImage('gallery', 'Gallery');
         $form->tabs('trans', 'Translation', function(Form\NestedForm $form) {
             $form->select('lang', 'Language')
                 ->options(config('constants.languages'));
