@@ -6,6 +6,8 @@ use Honviettour\Models\Tour;
 use Illuminate\Http\Response;
 use Illuminate\Http\Request;
 use Honviettour\Http\Controllers\Controller;
+use Honviettour\Http\Resources\TourResource;
+use Honviettour\Http\Resources\TourCollection;
 use Api;
 
 class TourController extends Controller
@@ -23,7 +25,8 @@ class TourController extends Controller
      */
     public function index(Request $request)
     {
-        return Api::response($this->model->search($request), Response::HTTP_OK);
+        $tours = $this->model->search($request);
+        return Api::response(new TourCollection($tours), Response::HTTP_OK);
     }
 
     /**
@@ -32,13 +35,10 @@ class TourController extends Controller
      * @param  \Honviettour\Models\Tour  $tour
      * @return \Illuminate\Http\Response
      */
-    public function show(Tour $tour)
+    public function show(Tour $tour, Request $request)
     {
-        $tour->trans;
-        $tour->images;
-        $tour->prices;
-        $tour->plans;
-        return Api::response($tour, Response::HTTP_OK);
+        $tour = $tour->show($tour, $request);
+        return Api::response(new TourResource($tour), Response::HTTP_OK);
     }
 
     /**

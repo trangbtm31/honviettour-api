@@ -6,6 +6,8 @@ use Honviettour\Models\Plan;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Honviettour\Http\Controllers\Controller;
+use Honviettour\Http\Resources\PlanResource;
+use Honviettour\Http\Resources\PlanCollection;
 use Api;
 
 class PlanController extends Controller
@@ -22,7 +24,8 @@ class PlanController extends Controller
      */
     public function index(Request $request)
     {
-        return Api::response($this->model->search($request), Response::HTTP_OK);
+        $plans = $this->model->search($request);
+        return Api::response(new PlanCollection($plans), Response::HTTP_OK);
     }
 
     /**
@@ -31,11 +34,10 @@ class PlanController extends Controller
      * @param  \Honviettour\Models\Plan  $plan
      * @return \Illuminate\Http\Response
      */
-    public function show(Plan $plan)
+    public function show(Plan $plan, Request $request)
     {
-        $plan->trans;
-        $plan->images;
-        return Api::response($plan, Response::HTTP_OK);
+        $plan = $plan->show($plan, $request);
+        return Api::response(new PlanResource($plan), Response::HTTP_OK);
     }
 
     /**

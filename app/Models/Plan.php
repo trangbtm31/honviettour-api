@@ -3,11 +3,10 @@
 namespace Honviettour\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Honviettour\Traits\PaginatorTrait;
+use Honviettour\Contracts\HonviettourModelAbstract;
 
-class Plan extends Model
+class Plan extends HonviettourModelAbstract
 {
-    use PaginatorTrait;
     public $timestamps = true;
 
     public function tours()
@@ -32,15 +31,14 @@ class Plan extends Model
         return parent::delete();
     }
 
-    public function search($request)
+    protected function _getModelProperties($request)
     {
-        $sortBy = $request->query->get('sortBy', 'id');
-        $sortType = $request->query->get('sortType', 'asc');
-        $limit = $request->query->get('limit', config('constants.ADMIN_ITEM_PER_PAGE'));
-
-        $builder = $this->with(['trans', 'images'])->orderBy($sortBy, $sortType);
-        return self::apiPaginate($builder, $limit);
+        $lang = $request->query->get('lang', config('constants.default_language'));
+        return [
+            'trans' => function($query) use ($lang) {
+                $query->where('lang', '=', $lang);
+            }
+        ];
     }
-
 
 }

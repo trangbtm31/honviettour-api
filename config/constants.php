@@ -7,6 +7,7 @@ return [
         1 => 'Children',
         2 => 'Adult'
     ],
+    'default_language' => 'en',
     'languages' => [
         'en' => 'English',
         'vi' => 'Tiếng Việt'
