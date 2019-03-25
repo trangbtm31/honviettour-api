@@ -14,6 +14,7 @@ use Encore\Admin\Show;
 
 class TourController extends Controller
 {
+    use HasResourceActions;
 
     /**
      * Index interface.
