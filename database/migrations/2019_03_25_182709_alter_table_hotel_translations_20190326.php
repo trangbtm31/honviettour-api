@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AlterTableHotelTranslations extends Migration
+class AlterTableHotelTranslations20190326 extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,6 @@ class AlterTableHotelTranslations extends Migration
     public function up()
     {
         Schema::table('hotel_translations', function (Blueprint $table) {
-            $table->dropColumn('title');
             $table->dropColumn('service');
         });
     }

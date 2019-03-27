@@ -13,12 +13,14 @@ class CreatePlanTourTable extends Migration
      */
     public function up()
     {
-        Schema::create('plan_tour', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('tour_id');
-            $table->integer('plan_id');
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('plan_tour')) {
+            Schema::create('plan_tour', function (Blueprint $table) {
+                $table->increments('id');
+                $table->integer('tour_id');
+                $table->integer('plan_id');
+                $table->timestamps();
+            });
+        }
     }
 
     /**
@@ -28,6 +30,6 @@ class CreatePlanTourTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tour_plans');
+        Schema::dropIfExists('plan_tour');
     }
 }
