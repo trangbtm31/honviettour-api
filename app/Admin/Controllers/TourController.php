@@ -91,10 +91,6 @@ class TourController extends Controller
             return $img ? '<img width="30" src="'  .(env('APP_URL') . '/storage/' . $img) . '""/>' : '';
         });
 
-        /*$grid->images('Photo')->display(function () {
-            return count($this->images) ? '<img width="30" src="'  .(env('APP_URL') . '/storage/' . $this->images[0]['path']) . '""/>' : '';
-        });*/
-
         $grid->column('Name')->display(function () {
             $names = array_map(function($item) {
                 return "<span>{$item['lang']}: {$item['name']}</span><br>";
@@ -165,7 +161,7 @@ class TourController extends Controller
         $form->text('start_place', 'Start place');
         $form->datetime('start_date', 'Start Date');
         $form->datetime('end_date', 'End Date');
-        $form->number('available_number', 'Available Number');
+        $form->number('available_number', 'Available Number')->default(1);
         $form->divide();
         // $this->getImagesTabField($form, get_class(new Tour));
         $form->image('photo', 'Photo');
@@ -192,7 +188,7 @@ class TourController extends Controller
         $form->divide();
         $planObj = Plan::with(['trans' => function($q) {
             return $q->orderBy('lang', 'asc');
-        }])->get();
+        }])->where('date', '>=', date('Y-m-d'))->get();
         $plans = [];
         $planAttrs = [];
         foreach ($planObj as $key => $plan) {
@@ -200,6 +196,7 @@ class TourController extends Controller
             $planAttrs[$plan->id] = [
                 'label' => isset($plan->trans[0]) ? $plan->trans[0]->title . (isset($plan->trans[1]) ? ' | ' . $plan->trans[1]->title : '') : $plan->id,
                 'image' => env('APP_URL') . '/storage/' . $plan->photo,
+                'date' => date('d-M-Y', strtotime($plan->date)),
             ];
             if(isset($plan->trans[0])) {
                 $planAttrs[$plan->id]['titles'][$plan->trans[0]->lang] = $plan->trans[0]->title;
@@ -211,12 +208,6 @@ class TourController extends Controller
             }
         }
         $form->advancedMultipleSelect('plans')->options($plans)->attr($planAttrs);
-        /*$form->hasMany('plans', 'Plan', function (Form\NestedForm $form) use ($plans) {
-            $form->select('Plan')->options($plans)->rules('required');
-            $form->text('title', 'Title')->rules('required');
-            $form->textarea('description', 'Description')->rules('required');
-            $form->image('photo', 'Photo');
-        });*/
         $form->divide();
         $form->switch('status', 'Published');
         $form->display('created_at', 'Created At');

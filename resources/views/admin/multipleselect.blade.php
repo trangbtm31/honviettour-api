@@ -11,7 +11,8 @@
                     data-des-en="@if(isset($attr[$select]['titles']['en'])) {{$attr[$select]['descriptions']['en']}} @endif"
                     data-des-vi="@if(isset($attr[$select]['descriptions']['vi'])) {{$attr[$select]['descriptions']['vi']}} @endif"
                     data-title-en="@if(isset($attr[$select]['titles']['en'])) {{$attr[$select]['titles']['en']}} @endif"
-                    data-title-vi="@if(isset($attr[$select]['titles']['vi'])) {{$attr[$select]['titles']['vi']}} @endif">
+                    data-title-vi="@if(isset($attr[$select]['titles']['vi'])) {{$attr[$select]['titles']['vi']}} @endif"
+                    data-date="{{$attr[$select]['date']}}">
                     {{$option}}
                 </option>
             @endforeach

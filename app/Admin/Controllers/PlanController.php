@@ -80,7 +80,6 @@ class PlanController extends Controller
     protected function grid()
     {
         $grid = new Grid(new Plan);
-//        $grid->paginate(config('constants.ADMIN_ITEM_PER_PAGE'));
 
         $grid->disableRowSelector();
 
@@ -95,12 +94,8 @@ class PlanController extends Controller
             }, $this->trans->toArray());
             return implode('', $titles);
         });
-        $grid->column('Description')->display(function() {
-            $descriptions = array_map(function($item) {
-                $des = str_limit($item['description'], 20);
-                return "<span>{$item['lang']}: $des</span><br>";
-            }, $this->trans->toArray());
-            return implode('', $descriptions);
+        $grid->date('Date')->display(function($date) {
+            return date('d-M-Y', strtotime($date));
         });
         $grid->created_at('Created at');
         $grid->updated_at('Updated at');
@@ -142,6 +137,7 @@ class PlanController extends Controller
             $form->switch('status', 'Published');
             $form->hidden('model_type')->default(get_class(new Plan));
         });*/
+        $form->date('date', 'Date');
         $form->image('photo', 'Photo');
         $form->multipleImage('gallery', 'Gallery');
         $form->tabs('trans', 'Translation', function(Form\NestedForm $form) {
