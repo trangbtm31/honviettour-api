@@ -15,7 +15,7 @@ Route::group([
 
     $router->resource('tours', TourController::class);
 
-    $router->resource('price', PriceController::class);
+    // $router->resource('price', PriceController::class);
 
     $router->resource('plans', PlanController::class);
 
