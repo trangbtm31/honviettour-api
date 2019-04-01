@@ -132,20 +132,16 @@ class PlanController extends Controller
     {
         $form = new Form(new Plan);
 
-        /*$form->tabs('images', 'Photo', function(Form\NestedForm $form) {
-            $form->image('path', 'Photo');
-            $form->switch('status', 'Published');
-            $form->hidden('model_type')->default(get_class(new Plan));
-        });*/
-        $form->date('date', 'Date');
-        $form->image('photo', 'Photo');
-        $form->multipleImage('gallery', 'Gallery');
-        $form->tabs('trans', 'Translation', function(Form\NestedForm $form) {
+        $form->date('date', 'Date')->rules('required');
+        $form->image('photo', 'Photo')->rules('required');
+
+        // $form->multipleImage('gallery', 'Gallery');
+        $form->tabs('trans', 'Information', function(Form\NestedForm $form) {
             $form->select('lang', 'Language')
-                ->options(config('constants.languages'));
-            $form->text('title', 'Title');
-            $form->textarea('description', 'Description');
-        })->tabKey('lang')->setSummernoteFields(['.description']);
+                ->options(config('constants.languages'))->rules('required');
+            $form->text('title', 'Title')->rules('required');
+            $form->textarea('description', 'Description')->rules('required|min:16');
+        })->tabKey('lang')->setSummernoteFields(['.description'])->rules('required');
         $form->switch('status', 'Published');
         $form->display('created_at', 'Created At');
         $form->display('updated_at', 'Updated At');

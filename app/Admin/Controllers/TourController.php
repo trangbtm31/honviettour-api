@@ -86,7 +86,7 @@ class TourController extends Controller
         $grid->paginate(config('constants.ADMIN_ITEM_PER_PAGE'));
         $grid->disableRowSelector();
 
-        $grid->id('Id');
+        $grid->id('ID');
         $grid->photo('Photo')->display(function ($img) {
             return $img ? '<img width="30" src="'  .(env('APP_URL') . '/storage/' . $img) . '""/>' : '';
         });
@@ -106,13 +106,6 @@ class TourController extends Controller
             return date('d-M-Y', strtotime($date));
         });
         $grid->available_number('Available No.');
-        $grid->column('Description')->display(function() {
-            $descriptions = array_map(function($item) {
-                $des = str_limit($item['description'], 20);
-                return "<span>{$item['lang']}: $des</span><br>";
-            }, $this->trans->toArray());
-            return implode('', $descriptions);
-        });
         $grid->created_at('Created at');
         $grid->updated_at('Updated at');
 
@@ -158,37 +151,38 @@ class TourController extends Controller
         $form = new Form(new Tour);
 
         $form->display('id', 'ID');
-        $form->text('start_place', 'Start place');
-        $form->datetime('start_date', 'Start Date');
-        $form->datetime('end_date', 'End Date');
-        $form->number('available_number', 'Available Number')->default(1);
+        $form->text('start_place', 'Start place')->rules('required');
+        $form->datetime('start_date', 'Start Date')->rules('required');
+        $form->datetime('end_date', 'End Date')->rules('required');
+        $form->number('available_number', 'Available Number')->default(1)->rules('required');
         $form->divide();
-        // $this->getImagesTabField($form, get_class(new Tour));
-        $form->image('photo', 'Photo');
-        $form->multipleImage('gallery', 'Gallery');
+        $form->image('photo', 'Photo')->rules('required');
+        // $form->multipleImage('gallery', 'Gallery');
 
+        // INFORMATION IN MULTIPLE LANGUAGES
         $form->tabs('trans', 'Information', function(Form\NestedForm $form) {
             $form->select('lang', 'Language')
-                ->options(config('constants.languages'));
-            $form->text('name', 'Name');
-            $form->textarea('description', 'Description')->rows(4);
+                ->options(config('constants.languages'))->rules('required');
+            $form->text('name', 'Name')->rules('required');
+            // $form->textarea('description', 'Description')->rows(4)->rules('required');
             $form->textarea('note', 'Note')->rows(2);
-            $form->textarea('service', 'Service');
-            $form->textarea('detail', 'Details');
-        })->tabKey('lang')->setSummernoteFields(['.detail', '.service']);
+            $form->textarea('service', 'Service')->rules('required|min:16');
+            $form->textarea('detail', 'Details')->rules('required|min:16');
+        })->tabKey('lang')->setSummernoteFields(['.detail', '.service'])->rules('required');
+
+        // PRICE
         $priceOptions = config('constants.tour_prices');
         $form->tabs('prices', 'Price', function (Form\NestedForm $form) use ($priceOptions){
-            $form->select('type')
-                ->options($priceOptions)
-                ->rules('required');
+            $form->text('type')->rules('required');
             $form->number('value')->rules('required');
-            $form->textarea('description')->rules('required')->rows(4);
-            $form->textarea('note')->rules('required')->rows(2);
-        });
-        $form->divide();
+            $form->textarea('description')->rules('required|min:16')->rows(4);
+            $form->hidden('model_type')->default(get_class(new Tour));
+        })->rules('required');
         $planObj = Plan::with(['trans' => function($q) {
             return $q->orderBy('lang', 'asc');
         }])->where('date', '>=', date('Y-m-d'))->get();
+
+        // PLAN
         $plans = [];
         $planAttrs = [];
         foreach ($planObj as $key => $plan) {
@@ -207,8 +201,8 @@ class TourController extends Controller
                 $planAttrs[$plan->id]['descriptions'][$plan->trans[1]->lang] = $plan->trans[1]->description;
             }
         }
-        $form->advancedMultipleSelect('plans')->options($plans)->attr($planAttrs);
-        $form->divide();
+        $form->advancedMultipleSelect('plans')->options($plans)->attr($planAttrs)->rules('required');
+
         $form->switch('status', 'Published');
         $form->display('created_at', 'Created At');
         $form->display('updated_at', 'Updated At');

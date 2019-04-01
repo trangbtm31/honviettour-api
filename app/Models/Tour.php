@@ -13,7 +13,7 @@ class Tour extends HonviettourModelAbstract
 
     public function prices()
     {
-        return $this->hasMany(Price::class)->orderBy('type');
+        return $this->morphMany(Price::class, 'model');
     }
 
     public function trans()

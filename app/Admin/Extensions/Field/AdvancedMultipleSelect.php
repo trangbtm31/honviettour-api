@@ -16,6 +16,7 @@ class AdvancedMultipleSelect extends EncoreMultopleSelect
     public function attr($arr)
     {
         $this->attr = $arr;
+        return $this;
     }
 
     /**
