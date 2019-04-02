@@ -178,6 +178,7 @@ return [
         Honviettour\Providers\RouteServiceProvider::class,
         Honviettour\Providers\AdminFieldServiceProvider::class,
         Honviettour\Providers\ApiServiceProvider::class,
+        Intervention\Image\ImageServiceProvider::class,
 
     ],
 
@@ -228,6 +229,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'Api' => Honviettour\Facades\Api::class,
+        'Image' => Intervention\Image\Facades\Image::class,
     ],
 
 ];

@@ -8,6 +8,7 @@ return [
         2 => 'Adult'
     ],
     'default_language' => 'en',
+    'img_max_width' => 960,
     'languages' => [
         'en' => 'English',
         'vi' => 'Tiếng Việt'

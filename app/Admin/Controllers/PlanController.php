@@ -9,6 +9,7 @@ use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
+use Image;
 
 class PlanController extends Controller
 {
@@ -133,9 +134,8 @@ class PlanController extends Controller
         $form = new Form(new Plan);
 
         $form->date('date', 'Date')->rules('required');
-        $form->image('photo', 'Photo')->rules('required');
-
-        // $form->multipleImage('gallery', 'Gallery');
+        $photoUniqname = str_random(16) . '.jpg';
+        $form->image('photo', 'Photo')->rules('required')->move('images/plans/', $photoUniqname);
         $form->tabs('trans', 'Information', function(Form\NestedForm $form) {
             $form->select('lang', 'Language')
                 ->options(config('constants.languages'))->rules('required');
@@ -145,6 +145,17 @@ class PlanController extends Controller
         $form->switch('status', 'Published');
         $form->display('created_at', 'Created At');
         $form->display('updated_at', 'Updated At');
+
+        $form->saved(function (Form $form) use ($photoUniqname) {
+            $savedPhotoPath = public_path('storage/images/plans/' . $photoUniqname);
+            $img = Image::make($savedPhotoPath);
+            $img->resize(config('constants.img_max_width'), null, function ($constraint) {
+                $constraint->aspectRatio();
+                $constraint->upsize();
+            });
+
+            $img->save($savedPhotoPath, 90);
+        });
 
         $form->footer(function ($footer) {
             // disable `View` checkbox

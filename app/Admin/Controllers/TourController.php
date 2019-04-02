@@ -4,13 +4,14 @@ namespace Honviettour\Admin\Controllers;
 
 use Honviettour\Models\Tour;
 use Honviettour\Models\Plan;
-use Honviettour\Models\Image;
+// use Honviettour\Models\Image;
 use Honviettour\Http\Controllers\Controller;
 use Encore\Admin\Controllers\HasResourceActions;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
+use Image;
 
 class TourController extends Controller
 {
@@ -156,7 +157,8 @@ class TourController extends Controller
         $form->datetime('end_date', 'End Date')->rules('required');
         $form->number('available_number', 'Available Number')->default(1)->rules('required');
         $form->divide();
-        $form->image('photo', 'Photo')->rules('required');
+        $photoUniqname = str_random(16) . '.jpg';
+        $form->image('photo', 'Photo')->rules('required')->move('images/tours/', $photoUniqname);;
         // $form->multipleImage('gallery', 'Gallery');
 
         // INFORMATION IN MULTIPLE LANGUAGES
@@ -206,6 +208,17 @@ class TourController extends Controller
         $form->switch('status', 'Published');
         $form->display('created_at', 'Created At');
         $form->display('updated_at', 'Updated At');
+
+        $form->saved(function (Form $form) use ($photoUniqname) {
+            $savedPhotoPath = public_path('storage/images/tours/' . $photoUniqname);
+            $img = Image::make($savedPhotoPath);
+            $img->resize(config('constants.img_max_width'), null, function ($constraint) {
+                $constraint->aspectRatio();
+                $constraint->upsize();
+            });
+
+            $img->save($savedPhotoPath, 90);
+        });
 
         $form->footer(function ($footer) {
             // disable `View` checkbox
