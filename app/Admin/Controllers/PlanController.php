@@ -9,11 +9,11 @@ use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
-use Image;
+use Honviettour\Traits\CommonTrait;
 
 class PlanController extends Controller
 {
-    use HasResourceActions;
+    use HasResourceActions, CommonTrait;
 
     /**
      * Index interface.
@@ -81,7 +81,7 @@ class PlanController extends Controller
     protected function grid()
     {
         $grid = new Grid(new Plan);
-
+        $grid->model()->orderBy('date', 'desc');
         $grid->disableRowSelector();
 
         $grid->id('Id');
@@ -132,29 +132,22 @@ class PlanController extends Controller
     protected function form()
     {
         $form = new Form(new Plan);
-
-        $form->date('date', 'Date')->rules('required');
+        $form->date('date', 'Date')->rules('required')->default(date('Y-m-d'));
         $photoUniqname = str_random(16) . '.jpg';
-        $form->image('photo', 'Photo')->rules('required')->move('images/plans/', $photoUniqname);
+        $form->image('photo', 'Photo')->rules('required')->move('images/plans', $photoUniqname);
         $form->tabs('trans', 'Information', function(Form\NestedForm $form) {
             $form->select('lang', 'Language')
                 ->options(config('constants.languages'))->rules('required');
             $form->text('title', 'Title')->rules('required');
-            $form->textarea('description', 'Description')->rules('required|min:16');
+            $form->textarea('description', 'Description')->rules('required|min:3');
         })->tabKey('lang')->setSummernoteFields(['.description'])->rules('required');
         $form->switch('status', 'Published');
         $form->display('created_at', 'Created At');
         $form->display('updated_at', 'Updated At');
 
         $form->saved(function (Form $form) use ($photoUniqname) {
-            $savedPhotoPath = public_path('storage/images/plans/' . $photoUniqname);
-            $img = Image::make($savedPhotoPath);
-            $img->resize(config('constants.img_max_width'), null, function ($constraint) {
-                $constraint->aspectRatio();
-                $constraint->upsize();
-            });
-
-            $img->save($savedPhotoPath, 90);
+            $form->photo !== null and $this->saveImages(public_path('storage/images/plans/'), $photoUniqname);
+            return false;
         });
 
         $form->footer(function ($footer) {
@@ -171,4 +164,6 @@ class PlanController extends Controller
 
         return $form;
     }
+
+
 }

@@ -9,6 +9,8 @@ return [
     ],
     'default_language' => 'en',
     'img_max_width' => 960,
+    'img_thumb_width' => 200,
+    'jpeg_quality' => 85,
     'languages' => [
         'en' => 'English',
         'vi' => 'Tiếng Việt'

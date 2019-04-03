@@ -11,7 +11,7 @@ use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
-use Image;
+use Honviettour\Traits\CommonTrait;
 
 class TourController extends Controller
 {
@@ -83,7 +83,7 @@ class TourController extends Controller
     protected function grid()
     {
         $grid = new Grid(new Tour);
-        $grid->model()->orderBy('start_date', 'asc');
+        $grid->model()->orderBy('start_date', 'desc');
         $grid->paginate(config('constants.ADMIN_ITEM_PER_PAGE'));
         $grid->disableRowSelector();
 
@@ -152,13 +152,14 @@ class TourController extends Controller
         $form = new Form(new Tour);
 
         $form->display('id', 'ID');
+        $form->text('short_code', 'Short code');
         $form->text('start_place', 'Start place')->rules('required');
-        $form->datetime('start_date', 'Start Date')->rules('required');
-        $form->datetime('end_date', 'End Date')->rules('required');
+        $form->date('start_date', 'Start Date')->rules('required')->default(date('Y-m-d'));
+        $form->date('end_date', 'End Date')->rules('required')->default(date('Y-m-d', strtotime('+3 days')));
         $form->number('available_number', 'Available Number')->default(1)->rules('required');
         $form->divide();
         $photoUniqname = str_random(16) . '.jpg';
-        $form->image('photo', 'Photo')->rules('required')->move('images/tours/', $photoUniqname);;
+        $form->image('photo', 'Photo')->rules('required')->move('images/tours', $photoUniqname);;
         // $form->multipleImage('gallery', 'Gallery');
 
         // INFORMATION IN MULTIPLE LANGUAGES
@@ -168,16 +169,16 @@ class TourController extends Controller
             $form->text('name', 'Name')->rules('required');
             // $form->textarea('description', 'Description')->rows(4)->rules('required');
             $form->textarea('note', 'Note')->rows(2);
-            $form->textarea('service', 'Service')->rules('required|min:16');
-            $form->textarea('detail', 'Details')->rules('required|min:16');
+            $form->textarea('service', 'Service')->rules('required|min:3');
+            $form->textarea('detail', 'Details')->rules('required|min:3');
         })->tabKey('lang')->setSummernoteFields(['.detail', '.service'])->rules('required');
 
         // PRICE
         $priceOptions = config('constants.tour_prices');
         $form->tabs('prices', 'Price', function (Form\NestedForm $form) use ($priceOptions){
             $form->text('type')->rules('required');
-            $form->number('value')->rules('required');
-            $form->textarea('description')->rules('required|min:16')->rows(4);
+            $form->number('value')->rules('required')->default(9);
+            $form->textarea('description')->rows(4);
             $form->hidden('model_type')->default(get_class(new Tour));
         })->rules('required');
         $planObj = Plan::with(['trans' => function($q) {
@@ -210,14 +211,8 @@ class TourController extends Controller
         $form->display('updated_at', 'Updated At');
 
         $form->saved(function (Form $form) use ($photoUniqname) {
-            $savedPhotoPath = public_path('storage/images/tours/' . $photoUniqname);
-            $img = Image::make($savedPhotoPath);
-            $img->resize(config('constants.img_max_width'), null, function ($constraint) {
-                $constraint->aspectRatio();
-                $constraint->upsize();
-            });
-
-            $img->save($savedPhotoPath, 90);
+            $form->photo !== null and $this->saveImages(public_path('storage/images/tours/'), $photoUniqname);
+            return false;
         });
 
         $form->footer(function ($footer) {
