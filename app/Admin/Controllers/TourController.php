@@ -87,7 +87,7 @@ class TourController extends Controller
         $grid->paginate(config('constants.ADMIN_ITEM_PER_PAGE'));
         $grid->disableRowSelector();
 
-        $grid->id('ID');
+        // $grid->id('ID');
         $grid->photo('Photo')->display(function ($img) {
             return $img ? '<img width="30" src="'  .(env('APP_URL') . '/storage/' . $img) . '""/>' : '';
         });
@@ -107,6 +107,9 @@ class TourController extends Controller
             return date('d-M-Y', strtotime($date));
         });
         $grid->available_number('Available No.');
+        $grid->status('Published')->display(function() {
+            return $this->status === 1 ? 'Yes' : 'No';
+        });
         $grid->created_at('Created at');
         $grid->updated_at('Updated at');
 
@@ -177,13 +180,16 @@ class TourController extends Controller
         $priceOptions = config('constants.tour_prices');
         $form->tabs('prices', 'Price', function (Form\NestedForm $form) use ($priceOptions){
             $form->text('type')->rules('required');
-            $form->number('value')->rules('required')->default(9);
+            $form->number('value')->rules('required')->default(0);
             $form->textarea('description')->rows(4);
             $form->hidden('model_type')->default(get_class(new Tour));
         })->rules('required');
         $planObj = Plan::with(['trans' => function($q) {
             return $q->orderBy('lang', 'asc');
-        }])->where('date', '>=', date('Y-m-d'))->get();
+        }])->where([
+            ['date', '>=', date('Y-m-d')],
+            ['status', '=', 1]
+        ])->get();
 
         // PLAN
         $plans = [];
@@ -206,7 +212,7 @@ class TourController extends Controller
         }
         $form->advancedMultipleSelect('plans')->options($plans)->attr($planAttrs)->rules('required');
 
-        $form->switch('status', 'Published');
+        $form->switch('status', 'Published')->default(1);;
         $form->display('created_at', 'Created At');
         $form->display('updated_at', 'Updated At');
 

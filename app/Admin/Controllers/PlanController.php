@@ -84,7 +84,7 @@ class PlanController extends Controller
         $grid->model()->orderBy('date', 'desc');
         $grid->disableRowSelector();
 
-        $grid->id('Id');
+        // $grid->id('Id');
         $grid->photo('Photo')->display(function ($img) {
             return $img ? '<img width="30" src="'  .(env('APP_URL') . '/storage/' . $img) . '""/>' : '';
         });
@@ -97,6 +97,9 @@ class PlanController extends Controller
         });
         $grid->date('Date')->display(function($date) {
             return date('d-M-Y', strtotime($date));
+        });
+        $grid->status('Published')->display(function() {
+            return $this->status === 1 ? 'Yes' : 'No';
         });
         $grid->created_at('Created at');
         $grid->updated_at('Updated at');
@@ -141,7 +144,7 @@ class PlanController extends Controller
             $form->text('title', 'Title')->rules('required');
             $form->textarea('description', 'Description')->rules('required|min:3');
         })->tabKey('lang')->setSummernoteFields(['.description'])->rules('required');
-        $form->switch('status', 'Published');
+        $form->switch('status', 'Published')->default(1);
         $form->display('created_at', 'Created At');
         $form->display('updated_at', 'Updated At');
 
