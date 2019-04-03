@@ -15,7 +15,7 @@ use Honviettour\Traits\CommonTrait;
 
 class TourController extends Controller
 {
-    use HasResourceActions;
+    use HasResourceActions, CommonTrait;
 
     /**
      * Index interface.
