@@ -25,6 +25,7 @@ class TourResource extends Resource
         unset($data['trans']);
         $request->getRelation = true;
         $data['plans'] = new PlanCollection($this->plans);
+        $data['prices'] = new PriceCollection($this->prices);
         $data['photo'] = $this->photo ? env('APP_URL') . '/storage/' . $this->photo : '';
         $data['gallery'] = $this->gallery ? array_map(function($item) {
             return env('APP_URL') . '/storage/' . $item;
