@@ -23,7 +23,7 @@ class Tour extends HonviettourModelAbstract
 
     public function plans()
     {
-        return $this->belongsToMany(Plan::class);
+        return $this->belongsToMany(Plan::class)->orderBy('date', 'asc');
     }
 
     public function images()

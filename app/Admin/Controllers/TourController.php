@@ -189,7 +189,7 @@ class TourController extends Controller
         }])->where([
             ['date', '>=', date('Y-m-d')],
             ['status', '=', 1]
-        ])->get();
+        ])->orderBy('date', 'asc')->get();
 
         // PLAN
         $plans = [];
@@ -203,11 +203,11 @@ class TourController extends Controller
             ];
             if(isset($plan->trans[0])) {
                 $planAttrs[$plan->id]['titles'][$plan->trans[0]->lang] = $plan->trans[0]->title;
-                $planAttrs[$plan->id]['descriptions'][$plan->trans[0]->lang] = $plan->trans[0]->description;
+                $planAttrs[$plan->id]['descriptions'][$plan->trans[0]->lang] = str_limit($plan->trans[0]->description, 2000);
             }
             if(isset($plan->trans[1])) {
                 $planAttrs[$plan->id]['titles'][$plan->trans[1]->lang] = $plan->trans[1]->title;
-                $planAttrs[$plan->id]['descriptions'][$plan->trans[1]->lang] = $plan->trans[1]->description;
+                $planAttrs[$plan->id]['descriptions'][$plan->trans[1]->lang] = str_limit($plan->trans[1]->description, 2000);
             }
         }
         $form->advancedMultipleSelect('plans')->options($plans)->attr($planAttrs)->rules('required');

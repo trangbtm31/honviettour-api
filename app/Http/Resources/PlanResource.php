@@ -16,7 +16,7 @@ class PlanResource extends Resource
     public function toArray($request)
     {
         $transAttrs = ['lang', 'title', 'description'];
-        $data = Arr::only(parent::toArray($request), ['status', 'trans']);
+        $data = Arr::only(parent::toArray($request), ['date', 'status', 'trans']);
         if(!empty($data['trans'])) {
             foreach ($data['trans'][0] as $key => $value) {
                 in_array($key, $transAttrs) and $data[$key] = $value;
