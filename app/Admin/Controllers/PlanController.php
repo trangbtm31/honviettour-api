@@ -139,8 +139,8 @@ class PlanController extends Controller
         $photoUniqname = str_random(16) . '.jpg';
         $form->image('photo', 'Photo')->rules('required')->move('images/plans', $photoUniqname);
         $form->tabs('trans', 'Information', function(Form\NestedForm $form) {
-            $form->select('lang', 'Language')
-                ->options(config('constants.languages'))->rules('required');
+            $form->normalSelect('lang', 'Language')
+                ->options(config('constants.languages'))->rules('required')->default('en');
             $form->text('title', 'Title')->rules('required');
             $form->textarea('description', 'Description')->rules('required|min:3');
         })->tabKey('lang')->setSummernoteFields(['.description'])->rules('required');

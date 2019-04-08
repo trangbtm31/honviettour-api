@@ -427,7 +427,7 @@ class Tabs extends Field
             $required = true;
         }
 
-    $summernoteField = !empty($this->summernoteFields) ? implode(', ', $this->summernoteFields) : '';
+        $summernoteField = !empty($this->summernoteFields) ? implode(', ', $this->summernoteFields) : '';
         $script = <<<EOT
             $('#has-many-{$this->column} > .nav').off('click', 'i.close-tab').on('click', 'i.close-tab', function(){
                 var \$navTab = $(this).siblings('a');

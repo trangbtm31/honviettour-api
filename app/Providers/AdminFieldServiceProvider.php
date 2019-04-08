@@ -19,7 +19,7 @@ class AdminFieldServiceProvider extends ServiceProvider
         Admin::booting(function () {
             Form::extend('tabs', Tabs::class);
             Form::extend('advancedMultipleSelect', AdvancedMultipleSelect::class);
-            Form::extend('select', Select::class);
+            Form::extend('normalSelect', Select::class);
         });
     }
 }

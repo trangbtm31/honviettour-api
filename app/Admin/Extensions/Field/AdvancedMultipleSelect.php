@@ -13,6 +13,13 @@ class AdvancedMultipleSelect extends EncoreMultopleSelect
     protected $view = 'admin.multipleselect';
     protected $attr = [];
 
+    protected static $js = [
+        'js/select2.min.js'
+    ];
+    protected static $css = [
+        'css/select2.css',
+    ];
+
     public function attr($arr)
     {
         $this->attr = $arr;

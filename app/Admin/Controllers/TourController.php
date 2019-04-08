@@ -167,8 +167,8 @@ class TourController extends Controller
 
         // INFORMATION IN MULTIPLE LANGUAGES
         $form->tabs('trans', 'Information', function(Form\NestedForm $form) {
-            $form->select('lang', 'Language')
-                ->options(config('constants.languages'))->rules('required');
+            $form->normalSelect('lang', 'Language')
+                ->options(config('constants.languages'))->rules('required')->default('en');
             $form->text('name', 'Name')->rules('required');
             // $form->textarea('description', 'Description')->rows(4)->rules('required');
             $form->textarea('note', 'Note')->rows(2);
