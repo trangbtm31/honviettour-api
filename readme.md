@@ -16,7 +16,7 @@
 ```bash
 # get source code
 	git clone https://github.com/trangbtm31/honviettour-api.git
-	
+
 # setup, install components
 	# basic
     composer install
@@ -25,14 +25,15 @@
     # laravel-admin
     php artisan vendor:publish --provider="Encore\Admin\AdminServiceProvider"
     php artisan admin:install
-    # laravel-admin extensions 
+    # laravel-admin extensions
     php artisan admin:import helpers
     php artisan admin:import media-manager
     php artisan vendor:publish --tag=api-tester
     php artisan admin:import log-viewer
     php artisan admin:import config
-    php artisan admin:import composer-viewer        
+    php artisan admin:import composer-viewer
     php artisan vendor:publish --tag=laravel-admin-summernote
+    php artisan vendor:publish --provider="Intervention\Image\ImageServiceProviderLaravel5"
 
 ```
 

@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\Routing\Router;
+/*use Illuminate\Routing\Router;
 
 Admin::registerAuthRoutes();
 
@@ -20,6 +20,6 @@ Route::group([
     $router->resource('plans', PlanController::class);
 
     $router->resource('hotels', HotelController::class);
-});
+});*/
 
 

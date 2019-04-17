@@ -48,7 +48,7 @@ return [
     */
     'route' => [
 
-        'prefix' => 'admin',
+        'prefix' => '',
 
         'namespace' => 'Honviettour\\Admin\\Controllers',
 
