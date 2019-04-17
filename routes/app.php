@@ -28,7 +28,7 @@ Route::group([
     'middleware'    => config('admin.route.middleware'),
 ], function (Router $router) {
 
-    $router->get('/', 'Admin/Controllers/HomeController@index');
+    $router->get('/', 'Honviettour\Admin\Controllers\HomeController@index');
     $router->resource('demo/users', Honviettour\Admin\Controllers\UserController::class);
 
     $router->resource('tours', Honviettour\Admin\Controllers\TourController::class);
