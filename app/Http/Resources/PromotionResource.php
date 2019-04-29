@@ -15,11 +15,10 @@ class PromotionResource extends Resource
      */
     public function toArray($request)
     {
-        dd($this, $request);
         $arr = ['content', 'code', 'expire_date', 'image'];
         $data = [];
         foreach ($arr as $value) {
-            $data[$value] = $this->$value;
+            $data[$value] = $this->{$value};
         }
         $data['image'] = $this->image ? env('APP_URL') . '/storage/' . $this->image : '';
         return $data;

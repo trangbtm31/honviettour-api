@@ -16,7 +16,6 @@ class PromotionCollection extends ApiCollection
      */
     public function toArray($request)
     {
-        dump($request);
         return parent::toArray($request);
     }
 }

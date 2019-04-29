@@ -18,6 +18,11 @@ class Image extends Model
         return $this->belongsTo(Tour::class, 'model_id');
     }
 
+    public function promotion()
+    {
+        return $this->belongsTo(Promotion::class, 'model_id');
+    }
+
     public function model()
     {
         return $this->morphTo();

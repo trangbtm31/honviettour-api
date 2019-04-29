@@ -25,7 +25,6 @@ class PromotionController extends Controller
      */
     public function index(Promotion $promotion)
     {
-        dd($promotion);
         return Api::response(new PromotionCollection($promotion), Response::HTTP_OK);
     }
 
