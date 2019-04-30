@@ -25,7 +25,11 @@ class PromotionController extends Controller
      */
     public function index(Promotion $promotion)
     {
-        return Api::response(new PromotionCollection($promotion), Response::HTTP_OK);
+        $promotion = $promotion->where('expire_date', '>', date('Y-m-d'))->get();
+        foreach($promotion as $item) {
+            $result[] = new PromotionResource($item);
+        }
+        return Api::response($result, Response::HTTP_OK);
     }
 
     /**
@@ -55,10 +59,9 @@ class PromotionController extends Controller
      * @param  \Honviettour\Promotion  $promotion
      * @return \Illuminate\Http\Response
      */
-    public function show(Promotion $promotion, Request $request)
+    public function show()
     {
-        $promotion = $promotion->show($promotion, $request);
-        return Api::response(new PromotionResource($promotion), Response::HTTP_OK);
+        //
     }
 
     /**

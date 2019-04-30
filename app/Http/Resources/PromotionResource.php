@@ -20,7 +20,7 @@ class PromotionResource extends Resource
         foreach ($arr as $value) {
             $data[$value] = $this->{$value};
         }
-        $data['image'] = $this->image ? env('APP_URL') . '/storage/' . $this->image : '';
+        $data['image'] = env('APP_URL') . '/storage/' . ($this->image ?: 'images/default.png');
         return $data;
     }
 }
