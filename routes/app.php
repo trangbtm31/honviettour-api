@@ -40,6 +40,8 @@ Route::group([
     $router->resource('hotels', Honviettour\Admin\Controllers\HotelController::class);
 
     $router->resource('promotions', Honviettour\Admin\Controllers\PromotionController::class);
+
+    $router->resource('news', Honviettour\Admin\Controllers\NewsController::class);
 });
 
 /*foreach ( File::allFiles(__DIR__ . '/web') as $partial) {
