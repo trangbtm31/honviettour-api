@@ -140,8 +140,8 @@ class NewsController extends Controller
         $form->tabs('trans', 'Information', function(Form\NestedForm $form) {
             $form->normalSelect('lang', 'Language')
                 ->options(config('constants.languages'))->rules('required')->default('en');
-            $form->textarea('news_translation.title', 'Title')->rules('required|min:3');
-            $form->textarea('news_translation.content', 'Content')->rules('required|min:3');
+            $form->text('title', 'Title')->rules('required|min:3');
+            $form->textarea('content', 'Content')->rules('required|min:3');
         })->tabKey('lang')->setSummernoteFields(['.content'])->rules('required');
 
         $form->text('code', 'Code');
