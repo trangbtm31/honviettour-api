@@ -83,7 +83,10 @@ class NewsController extends Controller
 
         $grid->id('Id')->sortable('desc');
         $grid->paginate(config('constants.ADMIN_ITEM_PER_PAGE'));
-        $grid->category('Category');
+        $grid->category('Category')->display(function($category) {
+            $result = [ 'News', 'Promotion'];
+            return $result[$category];
+        });
         $grid->image('Image')->display(function($image) {
             return '<img width="30" src="' .  (env('APP_URL') . '/storage/' . ($image ?: 'images/default.png')) . '""/>';
         });
