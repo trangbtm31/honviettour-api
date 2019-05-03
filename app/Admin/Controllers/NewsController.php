@@ -2,6 +2,7 @@
 
 namespace Honviettour\Admin\Controllers;
 
+use Encore\Admin\Admin;
 use Honviettour\Models\News;
 use Honviettour\Http\Controllers\Controller;
 use Encore\Admin\Controllers\HasResourceActions;
@@ -133,7 +134,8 @@ class NewsController extends Controller
     protected function form()
     {
         $form = new Form(new News);
-
+        Admin::js(['js/admin.js']);
+        Admin::script('checkCategory()');
         $categories = ['News','Promotion'];
 
         $form->normalSelect('category', 'Category')->options($categories);

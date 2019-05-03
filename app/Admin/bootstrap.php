@@ -20,11 +20,7 @@
 app('view')->prependNamespace('admin', resource_path('views/admin'));
 Encore\Admin\Form::forget(['map', 'editor']);
 
-Admin::js('js/admin.js');
-
 $script = <<<SCRIPT
-
-$(document).on('pjax:start', function() { checkCategory(); });
 
 SCRIPT;
 

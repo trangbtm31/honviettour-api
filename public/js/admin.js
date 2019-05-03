@@ -1,5 +1,5 @@
 $(function() {
-    checkCategory();
+
 })
 
 function checkCategory() {
@@ -19,3 +19,4 @@ function checkCategory() {
 
     }
 }
+
