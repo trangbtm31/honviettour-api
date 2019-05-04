@@ -99,6 +99,9 @@ class NewsController extends Controller
         });
         $grid->code('Code');
         $grid->expire_date('Expire date');
+        $grid->status('Published')->display(function() {
+            return $this->status === 1 ? 'Yes' : 'No';
+        });
         $grid->created_at('Created at');
         $grid->updated_at('Updated at');
 
@@ -151,6 +154,19 @@ class NewsController extends Controller
 
         $form->text('code', 'Code');
         $form->datetime('expire_date', 'Expire date')->default(date('Y-m-d H:i:s'));
+        $form->switch('status', 'Published')->default(1);
+
+        $form->footer(function ($footer) {
+            // disable `View` checkbox
+            $footer->disableViewCheck();
+
+            // disable `Continue editing` checkbox
+            $footer->disableEditingCheck();
+
+            // disable `Continue Creating` checkbox
+            $footer->disableCreatingCheck();
+
+        });
 
         return $form;
     }
