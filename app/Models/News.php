@@ -7,11 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class News extends HonviettourModelAbstract
 {
-    protected $fillable = ['category', 'image', 'code', 'expire_date'];
+    protected $fillable = ['category', 'image', 'code', 'expire_date', 'status'];
 
     public function trans()
     {
-        return $this->hasMany(NewsTranslation::class)->orderBy('lang');
+        return $this->hasMany(NewsTranslation::class);
     }
 
     public function images()

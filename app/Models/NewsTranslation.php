@@ -6,10 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class NewsTranslation extends Model
 {
-    protected $fillable = ['title', 'lang', 'content',  'promotion_id'];
+    protected $fillable = ['title', 'lang', 'content',  'news_id'];
 
-    public function promotion()
+    public function news()
     {
-        return $this->belongsTo(Promotion::class);
+        return $this->belongsTo(News::class);
     }
 }

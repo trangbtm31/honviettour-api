@@ -29,8 +29,14 @@ abstract class HonviettourModelAbstract extends Model {
         $sortBy = $request->query->get('sortBy', 'id');
         $sortType = $request->query->get('sortType', 'asc');
         $limit = $request->query->get('limit', config('constants.ADMIN_ITEM_PER_PAGE'));
+        $condition = $request->query->get('condition', '');
 
         $builder = $this->with($this->_getModelProperties($request))->where('status', 1)->orderBy($sortBy, $sortType);
+        if(!empty($condition)) {
+            foreach($condition as $key => $value) {
+                $builder = $builder->where($key, $value);
+            }
+        }
         return self::apiPaginate($builder, $limit);
     }
 
