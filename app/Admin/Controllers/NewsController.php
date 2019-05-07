@@ -137,7 +137,6 @@ class NewsController extends Controller
     protected function form()
     {
         $form = new Form(new News);
-        Admin::js(['js/admin.js']);
         Admin::script('checkCategory()');
         $categories = ['News','Promotion'];
 
