@@ -10,6 +10,7 @@
     {!! Admin::css() !!}
     <link rel="stylesheet" href="{{asset('css/styles.css')}}">
     <script src="{{ Admin::jQuery() }}"></script>
+    <script src="{{asset('js/admin.js')}}"></script>
     {!! Admin::headerJs() !!}
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
