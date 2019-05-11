@@ -17,7 +17,7 @@ class NewsResource extends Resource
     {
         $transAttrs = ['title', 'lang', 'content'];
         $categoryArr = ['news' , 'promotion'];
-        $data = Arr::only(parent::toArray($request), ['category', 'image', 'code', 'expire_date', 'status', 'trans']);
+        $data = Arr::only(parent::toArray($request), ['id', 'category', 'image', 'code', 'expire_date', 'status', 'trans']);
         if(!empty($data['trans'])) {
             foreach ($data['trans'][0] as $key => $value) {
                 in_array($key, $transAttrs) and $data[$key] = $value;
