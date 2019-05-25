@@ -80,17 +80,6 @@ function bindSelect2() {
         }
     })
 
-    $( ".select2-choices" ).sortable({
-        cursor: 'move',
-        placeholder: 'select2-search-choice-placeholder',
-        start: function() {
-            $('.select2-selected-description').hide();
-        },
-        stop: function() {
-            $('.select2-selected-description').css('display', '');
-        }
-    });
-
     $('.select2-selected-item .remove').click(function() {
         var target = $(this).closest('.select2-search-choice').find('.select2-search-choice-close');
         target.trigger('click');
