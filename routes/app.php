@@ -26,26 +26,22 @@ Admin::registerAuthRoutes();
 Route::group([
     'prefix'        => config('admin.route.prefix'),
     'middleware'    => config('admin.route.middleware'),
+    'namespace'    => config('admin.route.namespace'),
 ], function (Router $router) {
 
-    $router->get('/', 'Honviettour\Admin\Controllers\HomeController@index');
-    $router->resource('demo/users', Honviettour\Admin\Controllers\UserController::class);
+    $router->get('/', 'HomeController@index');
+    $router->post('/uploadImage', 'UploadController@handleImage');
+    $router->resource('demo/users', UserController::class);
 
-    $router->resource('tours', Honviettour\Admin\Controllers\TourController::class);
+    $router->resource('tours', TourController::class);
 
-    // $router->resource('price', PriceController::class);
+    $router->resource('plans', PlanController::class);
 
-    $router->resource('plans', Honviettour\Admin\Controllers\PlanController::class);
+    $router->resource('hotels', HotelController::class);
 
-    $router->resource('hotels', Honviettour\Admin\Controllers\HotelController::class);
+    $router->resource('promotions', PromotionController::class);
 
-    $router->resource('promotions', Honviettour\Admin\Controllers\PromotionController::class);
+    $router->resource('news', NewsController::class);
 
-    $router->resource('news', Honviettour\Admin\Controllers\NewsController::class);
-
-    $router->resource('feedbacks', Honviettour\Admin\Controllers\FeedbackController::class);
+    $router->resource('feedbacks', FeedbackController::class);
 });
-
-/*foreach ( File::allFiles(__DIR__ . '/web') as $partial) {
-    require $partial->getPathname();
-}*/

@@ -50,7 +50,6 @@
     padding: 6px;
     background: #f3f3f3;
     font-size: 13px;
-    display: none;
     border-radius: 2px;
     border: 1px solid #e2e2e2;
     box-shadow: 2px 3px 1px rgba(0, 0, 0, 0.2);
@@ -58,6 +57,22 @@
 }
 .select2-selected-item:hover ~ .select2-selected-description {
     display: block;
+}
+.select2-selected-item .fa.fa-times {
+    color: #e60000;
+    cursor: pointer;
+    padding: 5px;
+}
+.select2-search-choice .select2-search-choice-close {
+    display: none;
+}
+.select2-search-choice-placeholder {
+    background: #ddd;
+    width: 120px;
+    height: 36px;
+    margin: 0 3px;
+    border-radius: 3px;
+    border: 1px dotted red;
 }
 .meta-wrapper {
     float: right;
