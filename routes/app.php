@@ -30,7 +30,7 @@ Route::group([
 ], function (Router $router) {
 
     $router->get('/', 'HomeController@index');
-    $router->post('/uploadImage', 'UploadController@handleImage');
+    $router->any('/uploadImage', 'UploadController@handleImage');
     $router->resource('demo/users', UserController::class);
 
     $router->resource('tours', TourController::class);

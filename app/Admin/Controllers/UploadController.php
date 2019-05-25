@@ -12,8 +12,17 @@ class UploadController extends Controller
     use CommonTrait;
     public function handleImage(Request $request)
     {
-        $file = $request->file('image');
-        return $this->saveImages($file->getPathName());
+        switch ($request->method()) {
+            case 'POST':
+                $file = $request->file('image');
+                return $this->saveImages($file->getPathName());
+                break;
+            case 'DELETE':
+                return $this->deleteImages($request->get('image'));
+                break;
+            default:
+                break;
+        }
     }
 
     public function saveImages($tempPath)
@@ -30,6 +39,15 @@ class UploadController extends Controller
         });
 
         $img->save($savedPhotoPath, config('constants.jpeg_quality'));
-        return env('APP_URL') . '/' . $editorImgStoragePath . $photoName;
+        return url($editorImgStoragePath . $photoName);
+    }
+
+    public function deleteImages($image)
+    {
+        $imagePath = str_replace(url(''), public_path(), $image);
+        if(is_file($imagePath)) {
+            return unlink($imagePath) ? 'OK' : 'Can not remove image';
+        }
+        return 'Image not found';
     }
 }

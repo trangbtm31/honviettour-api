@@ -6,7 +6,7 @@ function checkCategory() {
     $('#code').closest('.form-group').hide();
     $('#expire_date').closest('.form-group').hide();
     $('.category').on('change', function() {
-        if($(this).val() == 1) {
+        if ($(this).val() == 1) {
             $('#code').closest('.form-group').show();
             $('#expire_date').closest('.form-group').show();
         } else {
@@ -23,7 +23,7 @@ function preprocesImage(img) {
     data.append('image', img[0]);
     $.ajax({
         headers: {
-             'X-CSRF-TOKEN': $('input[name="_token"]').val()
+            'X-CSRF-TOKEN': $('input[name="_token"]').val()
         },
         type: 'POST',
         url: baseUrl + '/uploadImage',
@@ -41,8 +41,24 @@ function preprocesImage(img) {
     });
 }
 
+function removeStorageImage(img) {
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('input[name="_token"]').val()
+        },
+        type: 'DELETE',
+        url: baseUrl + '/uploadImage',
+        data: {
+            image: img[0].src
+        },
+        error: function(err) {
+            console.log(err);
+        }
+    });
+}
+
 function bindSelect2() {
-    if(!$('.select2-element').length) {
+    if (!$('.select2-element').length) {
         console.log('No select2 element.');
         return false;
     }
@@ -79,6 +95,7 @@ function bindSelect2() {
             return formatted;
         }
     })
+
 
     $('.select2-selected-item .remove').click(function() {
         var target = $(this).closest('.select2-search-choice').find('.select2-search-choice-close');
