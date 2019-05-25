@@ -141,7 +141,7 @@ class PlanController extends Controller
         $form = new Form(new Plan);
         $form->date('date', 'Date')->rules('required')->default(date('Y-m-d'));
         $form->normalSelect('country_id', 'Country')
-            ->options(Country::all()->pluck('name', 'id'));
+            ->options(Country::orderBy('name', 'asc')->get()->pluck('name', 'id'));
         $photoUniqname = str_random(16) . '.jpg';
         $form->image('photo', 'Photo')->rules('required')->move('images/plans', $photoUniqname);
         $form->tabs('trans', 'Information', function(Form\NestedForm $form) {

@@ -162,7 +162,7 @@ class TourController extends Controller
         $form->display('id', 'ID');
         $form->text('short_code', 'Short code');
         $form->normalSelect('country_id', 'Country')
-            ->options(Country::all()->pluck('name', 'id'));
+            ->options(Country::orderBy('name', 'asc')->get()->pluck('name', 'id'));
         $form->text('start_place', 'Start place')->rules('required');
         $form->date('start_date', 'Start Date')->rules('required')->default(date('Y-m-d'));
         $form->date('end_date', 'End Date')->rules('required')->default(date('Y-m-d', strtotime('+3 days')));
