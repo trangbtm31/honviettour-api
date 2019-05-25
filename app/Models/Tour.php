@@ -11,13 +11,6 @@ class Tour extends HonviettourModelAbstract
     protected $fillable = ['start_place', 'available_number', 'start_date', 'end_date', 'status'];
     public $timestamps = true;
 
-    /******************
-        (\ /)
-        (-.-)
-        (m m)
-        /_|_\
-    *******************/
-
     public function country()
     {
         return $this->belongsTo(Country::class);
@@ -43,19 +36,28 @@ class Tour extends HonviettourModelAbstract
         return $this->morphMany(Image::class, 'model');
     }
 
-    protected function _getModelProperties($request)
+    protected function getModelProperties($request)
     {
         $lang = $request->query->get('lang', config('constants.default_language'));
         return [
-            'trans' => function($query) use ($lang) {
-                $query->where('lang', '=', $lang);
-            },
             'prices',
+            'country',
             'plans.trans' => function($query) use ($lang) {
                 $query->where('lang', '=', $lang);
             },
         ];
 
+    }
+
+    protected function setQuery($builder, $request)
+    {
+        $builder->select('*', 'tours.id as id');
+        if(!empty($request->get('country'))) {
+            $builder->where('country_id', $request->get('country'));
+        }
+        $lang = $request->get('lang', config('constants.default_language'));
+        $builder->join('tour_translations as trans', 'tours.id', '=', 'trans.tour_id')
+            ->where('trans.lang', '=', $lang);
     }
 
     public function delete()

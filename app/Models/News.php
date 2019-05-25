@@ -19,7 +19,7 @@ class News extends HonviettourModelAbstract
         return $this->morphMany(Image::class, 'model');
     }
 
-    protected function _getModelProperties($request)
+    protected function getModelProperties($request)
     {
         $lang = $request->query->get('lang', config('constants.default_language'));
         return [
@@ -27,5 +27,9 @@ class News extends HonviettourModelAbstract
                 $query->where('lang', '=', $lang);
             }
         ];
+    }
+
+    protected function setQuery($builder, $request) {
+
     }
 }

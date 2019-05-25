@@ -3,11 +3,21 @@ namespace Honviettour\Contracts;
 
 use Illuminate\Database\Eloquent\Model;
 use Honviettour\Traits\PaginatorTrait;
+use Illuminate\Http\Request;
 
 abstract class HonviettourModelAbstract extends Model {
 
     use PaginatorTrait;
-    abstract protected function _getModelProperties($request);
+    abstract protected function getModelProperties($request);
+
+    /******************
+        (\ /)
+        (-.-)
+        (m m)
+        /_|_\
+    *******************/
+    // Important! to apply conditions from different model
+    abstract protected function setQuery($builder, $request);
 
     // For model has gallery only
     public function setGalleryAttribute($data)
@@ -24,24 +34,20 @@ abstract class HonviettourModelAbstract extends Model {
         }
     }
 
-    public function search($request)
+    public function search(Request $request)
     {
         $sortBy = $request->query->get('sortBy', 'id');
         $sortType = $request->query->get('sortType', 'asc');
         $limit = $request->query->get('limit', config('constants.ADMIN_ITEM_PER_PAGE'));
-        $condition = $request['condition'] ?: '';
-
-        $builder = $this->with($this->_getModelProperties($request))->where('status', 1)->orderBy($sortBy, $sortType);
-        if(!empty($condition) && is_array($condition)) {
-            foreach($condition as $key => $value) {
-                $builder = $builder->where($key, $value);
-            }
-        }
+        $builder = $this->with($this->getModelProperties($request))
+            ->where('status', 1)
+            ->orderBy($sortBy, $sortType);
+        $this->setQuery($builder, $request);
         return self::apiPaginate($builder, $limit);
     }
 
     public function show($tour, $request)
     {
-        return $this->with($this->_getModelProperties($request))->find($tour->id);
+        return $this->with($this->getModelProperties($request))->find($tour->id);
     }
 }

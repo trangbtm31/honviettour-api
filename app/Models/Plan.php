@@ -43,11 +43,15 @@ class Plan extends HonviettourModelAbstract
         $sortType = $request->query->get('sortType', 'asc');
         $limit = $request->query->get('limit', config('constants.ADMIN_ITEM_PER_PAGE'));
 
-        $builder = $this->with($this->_getModelProperties($request))->where('status', 1)->orderBy($sortBy, $sortType);
+        $builder = $this->with($this->getModelProperties($request))->where('status', 1)->orderBy($sortBy, $sortType);
         return self::apiPaginate($builder, $limit);
     }*/
 
-    protected function _getModelProperties($request)
+    protected function setQuery($builder, $request) {
+
+    }
+
+    protected function getModelProperties($request)
     {
         $lang = $request->query->get('lang', config('constants.default_language'));
         return [

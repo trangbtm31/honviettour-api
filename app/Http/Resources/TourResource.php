@@ -15,15 +15,9 @@ class TourResource extends Resource
      */
     public function toArray($request)
     {
-        $transAttrs = ['lang', 'name', 'description', 'service', 'note', 'detail'];
-        $data = Arr::only(parent::toArray($request), ['id', 'start_place', 'available_number', 'start_date', 'end_date', 'status', 'trans']);
-        if(!empty($data['trans'])) {
-            foreach ($data['trans'][0] as $key => $value) {
-                in_array($key, $transAttrs) and $data[$key] = $value;
-            }
-        }
-        unset($data['trans']);
+        $data = Arr::only(parent::toArray($request), ['id', 'start_place', 'country_id', 'available_number', 'start_date', 'end_date', 'status', 'lang', 'name', 'description', 'service', 'note', 'detail']);
         $request->getRelation = true;
+        $data['country'] = $this->country ? $this->country->name : null;
         $data['plans'] = new PlanCollection($this->plans);
         $data['prices'] = new PriceCollection($this->prices);
         $data['photo'] = $this->photo ? env('APP_URL') . '/storage/' . $this->photo : '';

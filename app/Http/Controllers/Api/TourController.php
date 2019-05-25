@@ -9,6 +9,7 @@ use Honviettour\Http\Controllers\Controller;
 use Honviettour\Http\Resources\TourResource;
 use Honviettour\Http\Resources\TourCollection;
 use Api;
+// use DB;
 
 class TourController extends Controller
 {
@@ -25,7 +26,9 @@ class TourController extends Controller
      */
     public function index(Request $request)
     {
+        // DB::enableQueryLog();
         $tours = $this->model->search($request);
+        // var_dump(DB::getQueryLog());
         return Api::response(new TourCollection($tours), Response::HTTP_OK);
     }
 
