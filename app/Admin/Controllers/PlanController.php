@@ -96,6 +96,9 @@ class PlanController extends Controller
             }, $this->trans->toArray());
             return implode('', $titles);
         });
+        $grid->column('Country')->display(function () {
+            return $this->country ? $this->country->name : null;
+        });
         $grid->date('Date')->display(function($date) {
             return date('d-M-Y', strtotime($date));
         });

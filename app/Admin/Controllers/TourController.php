@@ -101,6 +101,9 @@ class TourController extends Controller
             return implode('', $names);
         });
 
+        $grid->column('Country')->display(function () {
+            return $this->country ? $this->country->name : null;
+        });
         $grid->start_place('Start place');
         $grid->start_date('Start Date')->display(function($date) {
             return date('d-M-Y', strtotime($date));
