@@ -16,6 +16,11 @@ trait CommonTrait
         $form->divide();
     }
 
+    public function getRandomString()
+    {
+        return str_random(8) . (int) microtime(true);
+    }
+
     public function saveImages($path, $photoName)
     {
         $savedPhotoPath = $path . $photoName;

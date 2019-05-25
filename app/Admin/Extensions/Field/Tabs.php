@@ -444,7 +444,13 @@ class Tabs extends Field
                     \$navTab.closest('li').remove();
                 }
             });
-            $('{$summernoteField}', $('#has-many-{$this->column} > .tab-content .tab-pane.active')).summernote({height: 300});
+            $('{$summernoteField}', $('#has-many-{$this->column} > .tab-content .tab-pane.active')).summernote({
+                height: 300,
+                callbacks: {
+                    onImageUpload: preprocesImage,
+                    onMediaDelete: removeStorageImage
+                }
+            });
 
             var index = 0;
             $('#has-many-{$this->column} > .header').off('click', '.add').on('click', '.add', function(){
@@ -455,7 +461,13 @@ class Tabs extends Field
                 $('#has-many-{$this->column} > .tab-content').append(paneHtml);
                 $('#has-many-{$this->column} > .nav > li:last-child a').tab('show');
                 {$templateScript}
-                $('{$summernoteField}', $('#has-many-{$this->column} > .tab-content .tab-pane.active')).summernote({height: 300});
+                $('{$summernoteField}', $('#has-many-{$this->column} > .tab-content .tab-pane.active')).summernote({
+                    height: 300,
+                    callbacks: {
+                        onImageUpload: preprocesImage,
+                        onMediaDelete: removeStorageImage
+                    }
+                });
             });
 
             if($required && !\$('#has-many-{$this->column} ul.nav-tabs li').length) {
@@ -464,7 +476,13 @@ class Tabs extends Field
 
             $('#has-many-{$this->column} > .nav').off('click', 'li').on('click', 'li:not(.active)', function() {
                 var target = $(this).find('> a').attr('href');
-                $('{$summernoteField}',  $(target)).summernote({height: 300});
+                $('{$summernoteField}',  $(target)).summernote({
+                    height: 300,
+                    callbacks: {
+                        onImageUpload: preprocesImage,
+                        onMediaDelete: removeStorageImage
+                    }
+                });
             });
 
             if ($('.has-error').length) {

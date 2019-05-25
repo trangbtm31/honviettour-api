@@ -6,7 +6,6 @@
     <title>{{ Admin::title() }} @if($header) | {{ $header }}@endif</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-
     {!! Admin::css() !!}
     <link rel="stylesheet" href="{{asset('css/styles.css')}}">
     <script src="{{ Admin::jQuery() }}"></script>
@@ -38,6 +37,7 @@
 </div>
 
 <script>
+    var baseUrl = '{{url('')}}';
     function LA() {}
     LA.token = "{{ csrf_token() }}";
 </script>

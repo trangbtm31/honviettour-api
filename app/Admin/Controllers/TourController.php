@@ -2,8 +2,10 @@
 
 namespace Honviettour\Admin\Controllers;
 
+use Encore\Admin\Admin;
 use Honviettour\Models\Tour;
 use Honviettour\Models\Plan;
+use Honviettour\Models\Country;
 // use Honviettour\Models\Image;
 use Honviettour\Http\Controllers\Controller;
 use Encore\Admin\Controllers\HasResourceActions;
@@ -152,17 +154,19 @@ class TourController extends Controller
      */
     protected function form()
     {
+        Admin::script('bindSelect2()');
         $form = new Form(new Tour);
-
         $form->display('id', 'ID');
         $form->text('short_code', 'Short code');
+        $form->normalSelect('country_id', 'Country')
+            ->options(Country::all()->pluck('name', 'id'));
         $form->text('start_place', 'Start place')->rules('required');
         $form->date('start_date', 'Start Date')->rules('required')->default(date('Y-m-d'));
         $form->date('end_date', 'End Date')->rules('required')->default(date('Y-m-d', strtotime('+3 days')));
         $form->number('available_number', 'Available Number')->default(1)->rules('required');
         $form->divide();
         $photoUniqname = str_random(16) . '.jpg';
-        $form->image('photo', 'Photo')->rules('required')->move('images/tours', $photoUniqname);;
+        $form->image('photo', 'Photo')->rules('required')->move('images/tours', $photoUniqname);
         // $form->multipleImage('gallery', 'Gallery');
 
         // INFORMATION IN MULTIPLE LANGUAGES
@@ -187,7 +191,7 @@ class TourController extends Controller
         $planObj = Plan::with(['trans' => function($q) {
             return $q->orderBy('lang', 'asc');
         }])->where([
-            ['date', '>=', date('Y-m-d')],
+            // ['date', '>=', date('Y-m-d')],
             ['status', '=', 1]
         ])->orderBy('date', 'asc')->get();
 
@@ -200,6 +204,7 @@ class TourController extends Controller
                 'label' => isset($plan->trans[0]) ? $plan->trans[0]->title . (isset($plan->trans[1]) ? ' | ' . $plan->trans[1]->title : '') : $plan->id,
                 'image' => env('APP_URL') . '/storage/' . $plan->photo,
                 'date' => date('d-M-Y', strtotime($plan->date)),
+                'country' => $plan->country_id
             ];
             if(isset($plan->trans[0])) {
                 $planAttrs[$plan->id]['titles'][$plan->trans[0]->lang] = $plan->trans[0]->title;

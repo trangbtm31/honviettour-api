@@ -8,6 +8,7 @@
             @foreach($options as $select => $option)
                 <option value="{{$select}}" {{  in_array($select, (array)old($column, $value)) ?'selected':'' }}
                     data-img="{{$attr[$select]['image']}}"
+                    data-country="{{$attr[$select]['country']}}"
                     data-des-en="@if(isset($attr[$select]['titles']['en'])) {{$attr[$select]['descriptions']['en']}} @endif"
                     data-des-vi="@if(isset($attr[$select]['descriptions']['vi'])) {{$attr[$select]['descriptions']['vi']}} @endif"
                     data-title-en="@if(isset($attr[$select]['titles']['en'])) {{$attr[$select]['titles']['en']}} @endif"
@@ -22,4 +23,3 @@
 
     </div>
 </div>
-<script src="{{asset('js/select2Config.js')}}"></script>

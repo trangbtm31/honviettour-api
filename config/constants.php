@@ -8,11 +8,12 @@ return [
         2 => 'Adult'
     ],
     'default_language' => 'en',
+    'img_default_extension' => '.jpg',
     'img_max_width' => 960,
     'img_thumb_width' => 200,
     'jpeg_quality' => 85,
     'languages' => [
         'en' => 'English',
         'vi' => 'Tiếng Việt'
-    ]
+    ],
 ];
