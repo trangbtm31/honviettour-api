@@ -44,6 +44,8 @@ Route::group([
     $router->resource('news', Honviettour\Admin\Controllers\NewsController::class);
 
     $router->resource('feedbacks', Honviettour\Admin\Controllers\FeedbackController::class);
+
+    $router->resource('banners', Honviettour\Admin\Controllers\BannerController::class);
 });
 
 /*foreach ( File::allFiles(__DIR__ . '/web') as $partial) {
