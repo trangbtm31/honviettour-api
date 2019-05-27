@@ -5,7 +5,6 @@ namespace Honviettour\Models;
 use Illuminate\Database\Eloquent\Model;
 use Honviettour\Contracts\HonviettourModelAbstract;
 
-
 class Tour extends HonviettourModelAbstract
 {
     protected $fillable = ['start_place', 'available_number', 'start_date', 'end_date', 'status'];
@@ -42,22 +41,32 @@ class Tour extends HonviettourModelAbstract
         return [
             'prices',
             'country',
-            'plans.trans' => function($query) use ($lang) {
+            'plans.trans' => function ($query) use ($lang) {
                 $query->where('lang', '=', $lang);
             },
         ];
-
     }
 
     protected function setQuery($builder, $request)
     {
         $builder->select('*', 'tours.id as id');
-        if(!empty($request->get('country'))) {
+        if (!empty($request->get('country'))) {
             $builder->where('country_id', $request->get('country'));
         }
         $lang = $request->get('lang', config('constants.default_language'));
         $builder->join('tour_translations as trans', 'tours.id', '=', 'trans.tour_id')
             ->where('trans.lang', '=', $lang);
+    }
+
+    public function show($tour, $request)
+    {
+        $lang = $request->get('lang', config('constants.default_language'));
+        return $this->with($this->getModelProperties($request))
+            ->leftJoin('tour_translations as trans', function ($q) use ($lang) {
+                $q->on('tours.id', '=', 'trans.tour_id')
+                    ->where('trans.lang', '=', $lang);
+            })
+            ->find($tour->id);
     }
 
     public function delete()
@@ -67,5 +76,4 @@ class Tour extends HonviettourModelAbstract
         $this->images()->delete();
         return parent::delete();
     }
-
 }

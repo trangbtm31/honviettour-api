@@ -20,9 +20,9 @@ class TourResource extends Resource
         $data['country'] = $this->country ? $this->country->name : null;
         $data['plans'] = new PlanCollection($this->plans);
         $data['prices'] = new PriceCollection($this->prices);
-        $data['photo'] = $this->photo ? env('APP_URL') . '/storage/' . $this->photo : '';
+        $data['photo'] = $this->photo ? url('storage/' . $this->photo) : '';
         $data['gallery'] = $this->gallery ? array_map(function($item) {
-            return env('APP_URL') . '/storage/' . $item;
+            return url('storage/' . $item);
         }, $this->gallery) : [];
         return $data;
     }
