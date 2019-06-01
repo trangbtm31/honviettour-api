@@ -46,4 +46,6 @@ Route::group([
     $router->resource('feedbacks', FeedbackController::class);
 
     $router->resource('banners', BannerController::class);
+
+    $router->resource('schedules', ScheduleController::class);
 });
