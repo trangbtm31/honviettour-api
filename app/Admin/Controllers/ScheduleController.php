@@ -82,7 +82,12 @@ class ScheduleController extends Controller
         $grid = new Grid(new Schedule);
 
         $grid->id('Id');
-        $grid->tour_name('Tour name');
+        $grid->column('Tour name')->display(function () {
+            $names = array_map(function($item) {
+                return "<span>{$item['lang']}: {$item['tour_name']}</span><br>";
+            }, $this->trans->toArray());
+            return implode('', $names);
+        });
         $grid->start_date('Start date');
         $grid->url('Url');
         $grid->status('Status');
@@ -122,11 +127,28 @@ class ScheduleController extends Controller
     {
         $form = new Form(new Schedule);
 
-        $form->text('tour_name', 'Tour name');
         $form->date('start_date', 'Start date')->default(date('Y-m-d'));
-        $form->url('url', 'Url');
-        $form->switch('status', 'Status');
 
+        // INFORMATION IN MULTIPLE LANGUAGES
+        $form->tabs('trans', 'Information', function(Form\NestedForm $form) {
+            $form->normalSelect('lang', 'Language')
+                ->options(config('constants.languages'))->rules('required')->default('en');
+            $form->text('tour_name', 'Tour name')->rules('required|min:3');
+            $form->url('url', 'Url')->rules('required');
+        })->tabKey('lang')->rules('required');
+        $form->switch('status', 'Published')->default(1);
+
+        $form->footer(function ($footer) {
+            // disable `View` checkbox
+            $footer->disableViewCheck();
+
+            // disable `Continue editing` checkbox
+            $footer->disableEditingCheck();
+
+            // disable `Continue Creating` checkbox
+            $footer->disableCreatingCheck();
+
+        });
         return $form;
     }
 }

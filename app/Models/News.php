@@ -29,7 +29,11 @@ class News extends HonviettourModelAbstract
         ];
     }
 
-    protected function setQuery($builder, $request) {
 
+    protected function setQuery($builder, $request)
+    {
+        $category = $request->query->get('category'. '');
+        $lang = $request->get('lang', config('constants.default_language'));
+        $builder->join('news_translations as trans', 'news.id', '=', 'trans.news_id')->where('trans.lang', '=', $lang)->where('category', $category);
     }
 }

@@ -10,15 +10,22 @@ use Api;
 
 class ScheduleController extends Controller
 {
+    private $model;
+    public function __construct(Schedule $schedule)
+    {
+        $this->model = $schedule;
+    }
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Schedule $schedule)
+    public function index(Request $request)
     {
         //
-        return Api::response($schedule->where('status', 1)->get(), Response::HTTP_OK);
+        $request['sortBy'] = 'schedules.'.$request->get('sortBy', 'id');
+        $schedule = $this->model->search($request);
+        return Api::response($schedule, Response::HTTP_OK);
     }
 
     /**
