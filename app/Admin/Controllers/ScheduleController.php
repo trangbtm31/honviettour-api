@@ -89,7 +89,12 @@ class ScheduleController extends Controller
             return implode('', $names);
         });
         $grid->start_date('Start date');
-        $grid->url('Url');
+        $grid->column('Url')->display(function () {
+            $names = array_map(function($item) {
+                return "<span>{$item['lang']}: {$item['url']}</span><br>";
+            }, $this->trans->toArray());
+            return implode('', $names);
+        });
         $grid->status('Status');
         $grid->created_at('Created at');
         $grid->updated_at('Updated at');
