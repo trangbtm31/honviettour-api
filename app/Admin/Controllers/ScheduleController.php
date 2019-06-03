@@ -82,6 +82,10 @@ class ScheduleController extends Controller
         $grid = new Grid(new Schedule);
 
         $grid->id('Id');
+        $grid->type('Type')->display(function($category) {
+            $result = [ 'Inbound', 'Outbound'];
+            return $result[$category];
+        });
         $grid->column('Tour name')->display(function () {
             $names = array_map(function($item) {
                 return "<span>{$item['lang']}: {$item['tour_name']}</span><br>";
@@ -133,6 +137,9 @@ class ScheduleController extends Controller
         $form = new Form(new Schedule);
 
         $form->date('start_date', 'Start date')->default(date('Y-m-d'));
+        $categories = ['Inbound','Outbound'];
+
+        $form->normalSelect('type', 'Type')->options($categories);
 
         // INFORMATION IN MULTIPLE LANGUAGES
         $form->tabs('trans', 'Information', function(Form\NestedForm $form) {
