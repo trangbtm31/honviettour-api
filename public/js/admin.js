@@ -78,7 +78,6 @@ function bindSelect2() {
             var formatted = '<div class="select2-selected-item">';
             formatted += '<img class="select2-selected-image" src="' + $(originalOption).data('img') + '"/>';
             formatted += '<span>' + $(originalOption).text() + '</span>';
-            formatted += '<span class="fa fa-times remove"></span>';
             formatted += '</div>';
             formatted += '<div class="select2-selected-description collapse clearfix">';
             formatted += '<img class="select2-selected-image big" src="' + $(originalOption).data('img') + '"/>';
@@ -96,10 +95,4 @@ function bindSelect2() {
         }
     })
 
-
-    $('.select2-selected-item .remove').click(function() {
-        var target = $(this).closest('.select2-search-choice').find('.select2-search-choice-close');
-        target.trigger('click');
-        return false;
-    })
 }

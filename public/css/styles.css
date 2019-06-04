@@ -23,7 +23,13 @@
 }
 
 .select2-container-multi .select2-choices .select2-search-choice {
-    padding: 3px 5px;
+    padding: 3px 26px 3px 5px;
+    position: relative;
+}
+
+.form-horizontal .modal-body .form-group {
+    margin-left: 0;
+    margin-right: 0;
 }
 
 /* ************** END SELECT2 OVERWRITE ************** */
@@ -64,7 +70,11 @@
     padding: 5px;
 }
 .select2-search-choice .select2-search-choice-close {
-    display: none;
+    display: in;
+    position: absolute;
+    right: 9px;
+    top: 9px;
+    left: auto;
 }
 .select2-search-choice-placeholder {
     background: #ddd;
