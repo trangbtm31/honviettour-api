@@ -53,6 +53,9 @@ class Tour extends HonviettourModelAbstract
         if (!empty($request->get('country'))) {
             $builder->where('country_id', $request->get('country'));
         }
+        if (!empty($request->get('start_place'))) {
+            $builder->where('start_place', $request->get('start_place'));
+        }
         $lang = $request->get('lang', config('constants.default_language'));
         $builder->join('tour_translations as trans', 'tours.id', '=', 'trans.tour_id')
             ->where('trans.lang', '=', $lang);

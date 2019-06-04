@@ -47,18 +47,17 @@ class Plan extends HonviettourModelAbstract
         return self::apiPaginate($builder, $limit);
     }*/
 
-    protected function setQuery($builder, $request) {
-
+    protected function setQuery($builder, $request)
+    {
+        $builder->select('*', 'plans.id as id');
+        $lang = $request->get('lang', config('constants.default_language'));
+        $builder->join('plan_translations as trans', 'plans.id', '=', 'trans.plan_id')
+            ->where('trans.lang', '=', $lang);
     }
 
     protected function getModelProperties($request)
     {
-        $lang = $request->query->get('lang', config('constants.default_language'));
-        return [
-            'trans' => function($query) use ($lang) {
-                $query->where('lang', '=', $lang);
-            }
-        ];
+        return;
     }
 
 }

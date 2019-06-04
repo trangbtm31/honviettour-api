@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 abstract class HonviettourModelAbstract extends Model {
 
     use PaginatorTrait;
+
     abstract protected function getModelProperties($request);
 
     /******************
@@ -36,12 +37,15 @@ abstract class HonviettourModelAbstract extends Model {
 
     public function search(Request $request)
     {
+        $table = $this->getTable();
         $sortBy = $request->query->get('sortBy', 'id');
         $sortType = $request->query->get('sortType', 'asc');
         $limit = $request->query->get('limit', config('constants.ADMIN_ITEM_PER_PAGE'));
-        $builder = $this->with($this->getModelProperties($request))
-            ->where('status', 1)
-            ->orderBy($sortBy, $sortType);
+        $builder = $this->where('status', 1)
+            ->orderBy("$table.$sortBy", $sortType);
+        if($this->getModelProperties($request)) {
+            $this->with($this->getModelProperties($request));
+        }
         $this->setQuery($builder, $request);
         return self::apiPaginate($builder, $limit);
     }
