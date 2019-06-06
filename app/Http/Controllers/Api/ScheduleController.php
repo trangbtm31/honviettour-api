@@ -23,7 +23,6 @@ class ScheduleController extends Controller
     public function index(Request $request)
     {
         //
-        $request['sortBy'] = 'schedules.'.$request->get('sortBy', 'id');
         $schedule = $this->model->search($request);
         return Api::response($schedule, Response::HTTP_OK);
     }
