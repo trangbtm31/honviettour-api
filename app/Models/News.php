@@ -21,6 +21,12 @@ class News extends HonviettourModelAbstract
 
     protected function getModelProperties($request)
     {
+        $lang = $request->query->get('lang', config('constants.default_language'));
+        return [
+            'trans' => function($query) use ($lang) {
+                $query->where('lang', '=', $lang);
+            }
+        ];
     }
 
 
