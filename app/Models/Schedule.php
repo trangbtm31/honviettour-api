@@ -16,15 +16,11 @@ class Schedule extends HonviettourModelAbstract
 
     protected function getModelProperties($request)
     {
-        $lang = $request->query->get('lang', config('constants.default_language'));
-        return [
-            'trans' => function($query) use ($lang) {
-                $query->where('lang', '=', $lang);
-            }
-        ];
     }
 
-    protected function setQuery($builder, $request) {
-
+    protected function setQuery($builder, $request)
+    {
+        $lang = $request->get('lang', config('constants.default_language'));
+        $builder->join('schedule_translations as trans', 'schedules.id', '=', 'trans.schedule_id')->where('trans.lang', '=', $lang);
     }
 }

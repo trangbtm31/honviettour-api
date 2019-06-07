@@ -24,8 +24,6 @@ class NewsController extends Controller
      */
     public function index(Request $request)
     {
-        $request['sortBy'] = 'news.'.$request->get('sortBy', 'id');
-
         $news = $this->model->search($request);
         return Api::response(new NewsCollection($news), Response::HTTP_OK);
     }

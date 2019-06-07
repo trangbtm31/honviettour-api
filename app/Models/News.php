@@ -21,19 +21,17 @@ class News extends HonviettourModelAbstract
 
     protected function getModelProperties($request)
     {
-        $lang = $request->query->get('lang', config('constants.default_language'));
-        return [
-            'trans' => function($query) use ($lang) {
-                $query->where('lang', '=', $lang);
-            }
-        ];
     }
 
 
     protected function setQuery($builder, $request)
     {
+        $categoryArr = ['news' => 0 , 'promotion' => 1];
         $category = $request->query->get('category'. '');
         $lang = $request->get('lang', config('constants.default_language'));
-        $builder->join('news_translations as trans', 'news.id', '=', 'trans.news_id')->where('trans.lang', '=', $lang)->where('category', $category);
+        if(!empty($category)) {
+            $builder->where('news.category', $categoryArr[$category]);
+        }
+        $builder->join('news_translations as trans', 'news.id', '=', 'trans.news_id')->where('trans.lang', '=', $lang);
     }
 }
