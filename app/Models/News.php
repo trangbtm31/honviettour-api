@@ -40,4 +40,15 @@ class News extends HonviettourModelAbstract
         }
         $builder->join('news_translations as trans', 'news.id', '=', 'trans.news_id')->where('trans.lang', '=', $lang);
     }
+
+    public function show($news, $request)
+    {
+        $lang = $request->get('lang', config('constants.default_language'));
+        return $this->with($this->getModelProperties($request))
+            ->leftJoin('news_translations as trans', function ($q) use ($lang) {
+                $q->on('news.id', '=', 'trans.news_id')
+                    ->where('trans.lang', '=', $lang);
+            })
+            ->find($news->id);
+    }
 }
