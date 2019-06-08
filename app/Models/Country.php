@@ -16,4 +16,13 @@ class Country extends Model
     {
         return $this->hasMany(Hotel::class);
     }
+
+    public function getTourCountries() {
+        return $this->select('countries.id','countries.name')
+            ->distinct()
+            ->join('tours', function($join) {
+                $join->on('countries.id','=', 'tours.country_id');
+            })
+            ->orderBy('countries.name')->get();
+    }
 }
