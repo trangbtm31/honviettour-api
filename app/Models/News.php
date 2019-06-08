@@ -35,10 +35,10 @@ class News extends HonviettourModelAbstract
         $categoryArr = ['news' => 0 , 'promotion' => 1];
         $category = $request->query->get('category'. '');
         $lang = $request->get('lang', config('constants.default_language'));
+        $builder->select('*', 'news.id as id')->join('news_translations as trans', 'news.id', '=', 'trans.news_id')->where('trans.lang', '=', $lang);
         if(!empty($category)) {
             $builder->where('news.category', $categoryArr[$category]);
         }
-        $builder->join('news_translations as trans', 'news.id', '=', 'trans.news_id')->where('trans.lang', '=', $lang);
     }
 
     public function show($news, $request)
