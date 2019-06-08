@@ -25,7 +25,7 @@ class PlanResource extends Resource
             }
             unset($data['trans']);
         } else {
-            $data = Arr::only(parent::toArray($request), ['id', 'date', 'status', 'trans', 'lang', 'title', 'description']);
+            $data = Arr::only(parent::toArray($request), ['date', 'status', 'trans', 'lang', 'title', 'description']);
         }
         $data['photo'] = $this->photo ? env('APP_URL') . '/storage/' . $this->photo : '';
         $data['gallery'] = $this->gallery ? array_map(function($item) {
