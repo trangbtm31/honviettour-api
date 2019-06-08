@@ -55,6 +55,16 @@ class Plan extends HonviettourModelAbstract
             ->where('trans.lang', '=', $lang);
     }
 
+    public function show($plan, $request)
+    {
+        $lang = $request->get('lang', config('constants.default_language'));
+        return $this->leftJoin('plan_translations as trans', function ($q) use ($lang) {
+                $q->on('plans.id', '=', 'trans.plan_id')
+                    ->where('trans.lang', '=', $lang);
+            })
+            ->find($plan->id);
+    }
+
     protected function getModelProperties($request)
     {
         return;

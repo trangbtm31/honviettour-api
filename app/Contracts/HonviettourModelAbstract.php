@@ -44,7 +44,7 @@ abstract class HonviettourModelAbstract extends Model {
         $builder = $this->where('status', 1)
             ->orderBy("$table.$sortBy", $sortType);
         if($this->getModelProperties($request)) {
-            $this->with($this->getModelProperties($request));
+            $builder->with($this->getModelProperties($request));
         }
         $this->setQuery($builder, $request);
         return self::apiPaginate($builder, $limit);
@@ -54,4 +54,14 @@ abstract class HonviettourModelAbstract extends Model {
     {
         return $this->with($this->getModelProperties($request))->find($tour->id);
     }
+
+    /*public function show($obj, $request)
+    {
+        $builder = $this->find($obj->id);
+        if($this->getModelProperties($request)) {
+            $builder->with($this->getModelProperties($request));
+        }
+        $this->setDetailQuery($builder, $request);
+        return $builder;
+    }*/
 }
