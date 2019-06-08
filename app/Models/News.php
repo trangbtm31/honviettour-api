@@ -45,6 +45,7 @@ class News extends HonviettourModelAbstract
     {
         $lang = $request->get('lang', config('constants.default_language'));
         return $this->with($this->getModelProperties($request))
+            -> select('*', 'news.id as id')
             ->leftJoin('news_translations as trans', function ($q) use ($lang) {
                 $q->on('news.id', '=', 'trans.news_id')
                     ->where('trans.lang', '=', $lang);
