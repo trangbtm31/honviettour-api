@@ -59,6 +59,14 @@ class Tour extends HonviettourModelAbstract
         if (!empty($request->get('start_date'))) {
             $builder->where('start_date', $request->get('start_date'));
         }
+        if (!empty($request->get('type'))) {
+            // If filter Type is Inbound tour
+            if($request->get('type') == 'in') {
+                $builder->where('country_id', '198'); // Vietnam
+            } else {
+                $builder->where('country_id', '!=', '198');
+            }
+        }
         $lang = $request->get('lang', config('constants.default_language'));
         $builder->join('tour_translations as trans', 'tours.id', '=', 'trans.tour_id')
             ->where('trans.lang', '=', $lang);
