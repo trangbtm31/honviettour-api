@@ -32,7 +32,6 @@ class News extends HonviettourModelAbstract
         return NewsCategory::select('news_categories.id', DB::raw('GROUP_CONCAT(trans.name ORDER BY lang asc SEPARATOR " | ") AS name'))
             ->join('news_category_translations AS trans', 'news_categories.id', '=', 'trans.news_category_id')
             ->groupBy('news_categories.id')
-            ->orderBy('lang', 'asc')
             ->orderBy('name', 'asc')
             ->get();
     }
