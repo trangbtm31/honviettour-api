@@ -64,7 +64,8 @@ class Tour extends HonviettourModelAbstract
     public function show($tour, $request)
     {
         $lang = $request->get('lang', config('constants.default_language'));
-        return $this->with($this->getModelProperties($request))
+        return $this->select('*', 'tours.id as id')
+            ->with($this->getModelProperties($request))
             ->leftJoin('tour_translations as trans', function ($q) use ($lang) {
                 $q->on('tours.id', '=', 'trans.tour_id')
                     ->where('trans.lang', '=', $lang);

@@ -58,7 +58,8 @@ class Plan extends HonviettourModelAbstract
     public function show($plan, $request)
     {
         $lang = $request->get('lang', config('constants.default_language'));
-        return $this->leftJoin('plan_translations as trans', function ($q) use ($lang) {
+        return $this->select('*', 'plans.id as id')
+            ->leftJoin('plan_translations as trans', function ($q) use ($lang) {
                 $q->on('plans.id', '=', 'trans.plan_id')
                     ->where('trans.lang', '=', $lang);
             })
