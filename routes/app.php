@@ -43,6 +43,8 @@ Route::group([
 
     $router->resource('news', NewsController::class);
 
+    $router->resource('news_categories', NewsCategoryController::class);
+
     $router->resource('feedbacks', FeedbackController::class);
 
     $router->resource('banners', BannerController::class);

@@ -15,9 +15,9 @@ class NewsResource extends Resource
      */
     public function toArray($request)
     {
-        $categoryArr = ['news' , 'promotion'];
-        $data = Arr::only(parent::toArray($request), ['id', 'category', 'image', 'code', 'expire_date', 'status', 'trans', 'created_at']);
-        $data['category'] = $categoryArr[$data['category']];
+        $data = Arr::only(parent::toArray($request), ['id', 'category', 'image', 'code', 'expire_date', 'status', 'lang', 'title', 'content', 'created_at', 'news_category']);
+        $data['category_name'] = !empty($data['news_category']['trans']) ? $data['news_category']['trans'][0]['name'] : '';
+        unset($data['news_category']);
         return $data;
     }
 }
