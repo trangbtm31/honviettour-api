@@ -101,7 +101,7 @@ class NewsController extends Controller
         });
 
         $grid->image('Image')->display(function($image) {
-            return '<img width="30" src="' .  (env('APP_URL') . '/storage/news' . ($image ?: 'images/default.png')) . '""/>';
+            return '<img width="30" src="' .  (env('APP_URL') . '/storage/' . ($image ?: 'images/default.png')) . '""/>';
         });
         $grid->column('Title')->display(function () {
             $names = array_map(function($item) {
