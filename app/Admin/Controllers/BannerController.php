@@ -83,7 +83,9 @@ class BannerController extends Controller
 
         $grid->id('Id');
         $grid->title('Title');
-        $grid->image('Image');
+        $grid->image('Image')->display(function($image) {
+            return '<img width="30" src="' .  (env('APP_URL') . '/storage/banners' . ($image ?: 'images/default.png')) . '""/>';
+        });
         $grid->status('Status');
         $grid->created_at('Created at');
         $grid->updated_at('Updated at');
@@ -121,7 +123,7 @@ class BannerController extends Controller
         $form = new Form(new Banner);
 
         $form->text('title', 'Title');
-        $form->image('image', 'Image');
+        $form->image('image', 'Image')->rules('required')->move('images/banners');
         $form->switch('status', 'Status');
 
         return $form;

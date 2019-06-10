@@ -89,7 +89,7 @@ class NewsController extends Controller
             return $result[$category];
         });
         $grid->image('Image')->display(function($image) {
-            return '<img width="30" src="' .  (env('APP_URL') . '/storage/' . ($image ?: 'images/default.png')) . '""/>';
+            return '<img width="30" src="' .  (env('APP_URL') . '/storage/news' . ($image ?: 'images/default.png')) . '""/>';
         });
         $grid->column('Title')->display(function () {
             $names = array_map(function($item) {
@@ -141,7 +141,7 @@ class NewsController extends Controller
         $categories = ['News','Promotion'];
 
         $form->normalSelect('category', 'Category')->options($categories);
-        $form->image('image', 'Image');
+        $form->image('image', 'Image')->rules('required')->move('images/news');
 
         // INFORMATION IN MULTIPLE LANGUAGES
         $form->tabs('trans', 'Information', function(Form\NestedForm $form) {
