@@ -3,8 +3,10 @@
 namespace Honviettour\Http\Controllers\Api;
 
 use Honviettour\Models\News;
+use Honviettour\Models\NewsCategory;
 use Illuminate\Http\Request;
 use Honviettour\Http\Resources\NewsCollection;
+use Honviettour\Http\Resources\NewsCategoryCollection;
 use Honviettour\Http\Resources\NewsResource;
 use Honviettour\Http\Controllers\Controller;
 use Illuminate\Http\Response;
@@ -13,9 +15,12 @@ use Api;
 class NewsController extends Controller
 {
     private $model;
-    public function __construct(News $news)
+    private $newsCategory;
+
+    public function __construct(News $news, NewsCategory $newsCategory)
     {
         $this->model = $news;
+        $this->newsCategory = $newsCategory;
     }
     /**
      * Display a listing of the resource.
@@ -46,6 +51,16 @@ class NewsController extends Controller
      */
     public function store(Request $request)
     {
+    }
+
+    /**
+     * Display all News Categories
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function categories(Request $request)
+    {
+        return Api::response(new NewsCategoryCollection($this->newsCategory->search($request)), Response::HTTP_OK);
     }
 
     /**

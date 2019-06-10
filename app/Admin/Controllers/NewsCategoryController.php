@@ -2,8 +2,6 @@
 
 namespace Honviettour\Admin\Controllers;
 
-use Encore\Admin\Admin;
-use Honviettour\Models\News;
 use Honviettour\Models\NewsCategory;
 use Honviettour\Http\Controllers\Controller;
 use Encore\Admin\Controllers\HasResourceActions;
@@ -11,17 +9,16 @@ use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
-use DB;
 
-class NewsController extends Controller
+class NewsCategoryController extends Controller
 {
     use HasResourceActions;
 
     public $model;
 
-    public function __construct(News $news)
+    public function __construct(NewsCategory $newsCategory)
     {
-        $this->model = $news;
+        $this->model = $newsCategory;
     }
 
     /**
@@ -89,35 +86,27 @@ class NewsController extends Controller
      */
     protected function grid()
     {
-        $grid = new Grid(new News);
+        $grid = new Grid(new NewsCategory);
 
-        $grid->id('Id')->sortable('desc');
         $grid->paginate(config('constants.ADMIN_ITEM_PER_PAGE'));
-        $grid->newsCategory('Category')->display(function() {
-            $category = array_map(function($item) {
-                return "<span>{$item['lang']}: {$item['name']}</span><br>";
-            }, $this->newsCategory->trans->toArray());
-            return implode('', $category);
-        });
 
-        $grid->image('Image')->display(function($image) {
-            return '<img width="30" src="' .  (env('APP_URL') . '/storage/news' . ($image ?: 'images/default.png')) . '""/>';
-        });
-        $grid->column('Title')->display(function () {
+        $grid->column('Name')->display(function () {
             $names = array_map(function($item) {
-                return "<span>{$item['lang']}: {$item['title']}</span><br>";
+                return "<span>{$item['lang']}: {$item['name']}</span><br>";
             }, $this->trans->toArray());
             return implode('', $names);
         });
-        $grid->code('Code');
-        $grid->expire_date('Expire date');
+
         $grid->status('Published')->display(function() {
             return $this->status === 1 ? 'Yes' : 'No';
-        });
-        $grid->created_at('Created at');
+        })->sortable('desc');
+        $grid->created_at('Created at')->sortable('desc');
         $grid->updated_at('Updated at');
 
         $grid->actions(function (Grid\Displayers\Actions $actions) {
+            if(count($actions->row->news)) {
+                $actions->disableDelete();
+            }
             $actions->disableView();
         });
 
@@ -132,15 +121,9 @@ class NewsController extends Controller
      */
     protected function detail($id)
     {
-        $show = new Show(News::findOrFail($id));
+        $show = new Show(NewsCategory::findOrFail($id));
 
-        $show->id('Id');
-        $show->category('Category');
-        $show->image('Image');
-        $show->code('Code');
-        $show->expire_date('Expire date');
-        $show->created_at('Created at');
-        $show->updated_at('Updated at');
+
 
         return $show;
     }
@@ -153,31 +136,34 @@ class NewsController extends Controller
     protected function form()
     {
         $form = new Form($this->model);
-        $categoryApplyCode = News::CATEGORY_APPLY_CODE;
-        Admin::script('checkCategory()');
+        $id = !empty(request()->route()->parameters()) ? request()->route()->parameters()['news_category'] : null;
+        $deletable = true;
+        if($id) {
+            $data = $this->model->find($id);
+            $deletable = !count($data->news);
+        }
 
-        $form->normalSelect('category', 'Category')->options($this->model->getAllCategories()->pluck('name', 'id'))->rules('required')->attribute(['data-categoryApplyCode' => $categoryApplyCode]);
-
-        $form->image('image', 'Image')->rules('required')->move('images/news');
-
-        // INFORMATION IN MULTIPLE LANGUAGES
         $form->tabs('trans', 'Information', function(Form\NestedForm $form) {
             $form->normalSelect('lang', 'Language')
                 ->options(config('constants.languages'))->rules('required')->default('en');
-            $form->text('title', 'Title')->rules('required|min:3');
-            $form->textarea('content', 'Content')->rules('required|min:3');
-        })->tabKey('lang')->setSummernoteFields(['.content'])->rules('required');
-
-        $form->text('code', 'Code');
-        $form->datetime('expire_date', 'Expire date')->default(date('Y-m-d H:i:s'));
+            $form->text('name', 'Name')->rules('required');
+        })->tabKey('lang')->rules('required');
         $form->switch('status', 'Published')->default(1);
+        $form->display('created_at', 'Created At');
+        $form->display('updated_at', 'Updated At');
+
+
+        $form->tools(function (Form\Tools $tools) use ($deletable){
+            $tools->disableView();
+            // Disable `Delete` btn.
+            if(!$deletable) {
+                $tools->disableDelete();
+            }
+        });
 
         $form->footer(function ($footer) {
             // disable `View` checkbox
             $footer->disableViewCheck();
-
-            // disable `Continue editing` checkbox
-            $footer->disableEditingCheck();
 
             // disable `Continue Creating` checkbox
             $footer->disableCreatingCheck();

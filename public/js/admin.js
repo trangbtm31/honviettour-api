@@ -5,15 +5,20 @@ $(function() {
 function checkCategory() {
     $('#code').closest('.form-group').hide();
     $('#expire_date').closest('.form-group').hide();
-    $('.category').on('change', function() {
-        if ($(this).val() == 1) {
-            $('#code').closest('.form-group').show();
-            $('#expire_date').closest('.form-group').show();
-        } else {
-            $('#code').closest('.form-group').hide();
-            $('#expire_date').closest('.form-group').hide();
-        }
-    })
+    var categoryApplyCode = $('.category').data('categoryapplycode');
+    $('.category')
+        .on('change', function() {
+            regex = new RegExp(categoryApplyCode, 'i');
+            if (regex.test(escape($(this).find('option:selected').text()))) {
+                $('#code').closest('.form-group').show();
+                $('#expire_date').closest('.form-group').show();
+            } else {
+                $('#code').closest('.form-group').hide();
+                $('#expire_date').closest('.form-group').hide();
+            }
+        })
+        .val($('.category').val())
+        .trigger('change')
 }
 
 // upload image to storage, return the image url

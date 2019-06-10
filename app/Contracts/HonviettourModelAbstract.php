@@ -43,7 +43,7 @@ abstract class HonviettourModelAbstract extends Model {
         $limit = $request->query->get('limit', config('constants.ADMIN_ITEM_PER_PAGE'));
         $builder = $this->where('status', 1)
             ->orderBy("$table.$sortBy", $sortType);
-        if($this->getModelProperties($request)) {
+        if(!empty($this->getModelProperties($request))) {
             $builder->with($this->getModelProperties($request));
         }
         $this->setQuery($builder, $request);
