@@ -15,7 +15,7 @@ class TourResource extends Resource
      */
     public function toArray($request)
     {
-        $data = Arr::only(parent::toArray($request), ['id', 'start_place', 'country_id', 'available_number', 'start_date', 'end_date', 'status', 'lang', 'name', 'description', 'service', 'note', 'detail']);
+        $data = Arr::only(parent::toArray($request), ['id', 'start_place', 'country_id', 'available_number', 'start_date', 'end_date', 'status', 'lang', 'name', 'description', 'service', 'note', 'detail', 'photo', 'gallery']);
         $request->getRelation = true;
         $data['country'] = $this->country ? $this->country->name : null;
         $plans = new PlanCollection($this->plans);
@@ -27,10 +27,6 @@ class TourResource extends Resource
         // $data['plans'] = new PlanCollection($this->plans);
         $data['plans'] = $plans;
         $data['prices'] = new PriceCollection($this->prices);
-        $data['photo'] = $this->photo ? url('storage/' . $this->photo) : '';
-        $data['gallery'] = $this->gallery ? array_map(function($item) {
-            return url('storage/' . $item);
-        }, $this->gallery) : [];
         return $data;
     }
 }
