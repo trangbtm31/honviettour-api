@@ -136,7 +136,7 @@ class ScheduleController extends Controller
     {
         $form = new Form(new Schedule);
 
-        $form->date('start_date', 'Start date')->default(date('Y-m-d'));
+        $form->text('start_date', 'Start date')->default(date('Y-m-d'))->rules('required');
         $categories = ['Inbound','Outbound'];
 
         $form->normalSelect('type', 'Type')->options($categories);

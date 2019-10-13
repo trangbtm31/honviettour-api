@@ -2,7 +2,6 @@
 
 namespace Honviettour\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Honviettour\Contracts\HonviettourModelAbstract;
 
 class Tour extends HonviettourModelAbstract

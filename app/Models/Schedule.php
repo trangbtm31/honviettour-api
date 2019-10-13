@@ -3,7 +3,6 @@
 namespace Honviettour\Models;
 
 use Honviettour\Contracts\HonviettourModelAbstract;
-use Illuminate\Database\Eloquent\Model;
 
 class Schedule extends HonviettourModelAbstract
 {
