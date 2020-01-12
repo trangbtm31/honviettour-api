@@ -15,7 +15,7 @@ class TourResource extends Resource
      */
     public function toArray($request)
     {
-        $data = Arr::only(parent::toArray($request), ['id', 'start_place', 'country_id', 'available_number', 'start_date', 'end_date', 'status', 'lang', 'name', 'description', 'service', 'note', 'detail', 'photo', 'gallery']);
+        $data = Arr::only(parent::toArray($request), ['id', 'start_place', 'country_id', 'available_number', 'start_date', 'end_date', 'status', 'is_pilgrimage', 'lang', 'name', 'description', 'service', 'note', 'detail', 'photo', 'gallery']);
         $request->getRelation = true;
         $data['country'] = $this->country ? $this->country->name : null;
         $plans = new PlanCollection($this->plans);

@@ -6,7 +6,7 @@ use Honviettour\Contracts\HonviettourModelAbstract;
 
 class Tour extends HonviettourModelAbstract
 {
-    protected $fillable = ['start_place', 'available_number', 'start_date', 'end_date', 'status'];
+    protected $fillable = ['start_place', 'available_number', 'start_date', 'end_date', 'status', 'is_pilgrimage'];
     public $timestamps = true;
 
     public function country()
@@ -49,6 +49,9 @@ class Tour extends HonviettourModelAbstract
     protected function setQuery($builder, $request)
     {
         $builder->select('*', 'tours.id as id');
+        if (!empty($request->get('is_pilgrimage'))) {
+            $builder->where('is_pilgrimage', $request->get('is_pilgrimage'));
+        }
         if (!empty($request->get('country'))) {
             $builder->where('country_id', $request->get('country'));
         }
