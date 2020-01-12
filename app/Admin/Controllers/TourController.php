@@ -115,6 +115,9 @@ class TourController extends Controller
         $grid->status('Published')->display(function () {
             return $this->status === 1 ? 'Yes' : 'No';
         });
+        $grid->status('Is pilgrimage')->display(function () {
+            return $this->is_pilgrimage === 1 ? 'Yes' : 'No';
+        });
         $grid->created_at('Created at');
         $grid->updated_at('Updated at');
 
@@ -161,6 +164,7 @@ class TourController extends Controller
         $form = new Form(new Tour);
         $form->display('id', 'ID');
         $form->text('short_code', 'Short code');
+        $form->switch('is_pilgrimage', 'Is pilgrimage?')->default(0);
         $form->normalSelect('country_id', 'Country')
             ->options(Country::orderBy('name', 'asc')->get()->pluck('name', 'id'));
         $form->text('start_place', 'Start place')->rules('required');
