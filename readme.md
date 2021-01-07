@@ -20,8 +20,8 @@
 # setup, install components
 	# basic
     composer install
-    php artisan migrate
     php artisan storage:link
+    php artisan key:generate
     # laravel-admin
     php artisan vendor:publish --provider="Encore\Admin\AdminServiceProvider"
     php artisan admin:install
