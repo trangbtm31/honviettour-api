@@ -67,6 +67,10 @@
         "optimize-autoloader": true,
         "github-oauth": {
 
+        },
+        "allow-plugins": {
+            "kylekatarnls/update-helper": true,
+            "symfony/thanks": true
         }
     }
 }
