@@ -1,6 +1,12 @@
 <?php
 use Illuminate\Support\Str;
 
+$url = parse_url(getenv("CLEARDB_DATABASE_URL"));
+$host = $url["host"] ?? env("DB_HOST");
+$username = $url["user"] ?? env("DB_USERNAME");
+$password = $url["pass"] ?? env("DB_PASSWORD");
+$database = substr($url["path"], 1);
+
 return [
 
     /*
@@ -133,9 +139,3 @@ return [
     ]
 
 ];
-
-$url = parse_url(getenv("CLEARDB_DATABASE_URL"));
-$host = $url["host"] ?? null;
-$username = $url["user"] ?? null;
-$password = $url["pass"] ?? null;
-$database = substr($url["path"], 1);
