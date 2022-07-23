@@ -5,9 +5,8 @@
     "license": "MIT",
     "type": "project",
     "require": {
-        "php": "^8.1.0",
+        "php": ">=7.0.0",
         "barryvdh/laravel-cors": "^0.11.2",
-        "doctrine/dbal": "^3.2",
         "encore/laravel-admin": "^1.6",
         "fideloper/proxy": "~3.3",
         "intervention/image": "^2.5",
@@ -69,7 +68,6 @@
 
         },
         "allow-plugins": {
-            "kylekatarnls/update-helper": true,
             "symfony/thanks": true
         }
     }
