@@ -61,7 +61,8 @@
         ],
         "compile": [
             "php artisan vendor:publish --provider=\"Encore\\Admin\\AdminServiceProvider\"",
-            "php artisan admin:install"
+            "php artisan admin:install",
+            "yes"
         ]
     },
     "config": {
