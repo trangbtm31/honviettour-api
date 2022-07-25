@@ -60,8 +60,7 @@
             "@php artisan package:discover"
         ],
         "compile": [
-            "php artisan vendor:publish --provider=\"Encore\\Admin\\AdminServiceProvider\"",
-            "php artisan admin:install --no-interaction"
+            "php artisan vendor:publish --provider=\"Encore\\Admin\\AdminServiceProvider\""
         ]
     },
     "config": {
