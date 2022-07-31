@@ -61,6 +61,7 @@
         ],
         "compile": [
             "php artisan cache:clear",
+            "php artisan storage:link",
             "php artisan vendor:publish --provider=\"Encore\\Admin\\AdminServiceProvider\"",
             "php artisan vendor:publish --provider=\"Intervention\\Image\\ImageServiceProviderLaravel5\"",
             "php artisan vendor:publish --tag=laravel-admin-summernote"
